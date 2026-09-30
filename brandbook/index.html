@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Брендбук babers studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Golos+Text:wght@400;500;600&display=swap">
+<style>
+/* Layout: одна колонка-«паспорт бренда», разделы идут как карточки дела; каждый блок сразу показывает правило на живом примере */
+:root{
+  --graphite:#16181D;   /* фон */
+  --panel:#1F2229;      /* поверхность карточек (производный от графита) */
+  --chalk:#F2F0EB;      /* основной текст, светлые фоны */
+  --asphalt:#6B7079;    /* вторичный текст, линии */
+  --cobalt:#3358FF;     /* только действие: кнопки, ссылки */
+  --wheat:#E8B54A;      /* только результат: цифры, рост */
+  --line:rgba(242,240,235,.12);
+  --muted:#A3A7AF;
+  --f-head:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-text:"Golos Text",system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--graphite);color:var(--chalk);font:400 16px/1.6 var(--f-text);margin:0}
+.wrap{max-width:1040px;margin:0 auto;padding-inline:clamp(16px,4vw,40px);padding-block:40px 80px;display:flex;flex-direction:column;gap:72px}
+h1,h2,h3{font-family:var(--f-head);margin:0;text-wrap:balance;letter-spacing:-.02em}
+h2{font-size:clamp(26px,4vw,36px);font-weight:800}
+h3{font-size:18px;font-weight:700}
+p{margin:0}
+.eyebrow{font:600 12px/1 var(--f-text);text-transform:uppercase;letter-spacing:.12em;color:var(--muted)}
+.lead{color:var(--muted);max-width:62ch}
+section{display:flex;flex-direction:column;gap:24px}
+.sechead{display:flex;flex-direction:column;gap:10px}
+
+/* HERO */
+.hero{display:flex;flex-direction:column;gap:22px;padding-top:12px}
+.brand{font:800 clamp(44px,9vw,104px)/.95 var(--f-head);letter-spacing:-.045em}
+.brand span{color:var(--wheat)}
+.hero .thesis{font:600 clamp(20px,2.6vw,26px)/1.35 var(--f-head);max-width:30ch}
+.facts{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:14px;color:var(--muted)}
+
+/* PALETTE */
+.palette{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.sw{background:var(--panel);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.sw .chipc{height:110px;border-bottom:1px solid var(--line)}
+.sw .meta{padding:14px;display:flex;flex-direction:column;gap:6px;flex:1}
+.sw .name{font:700 16px var(--f-head)}
+.sw code{font:500 13px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted)}
+.sw .use{font-size:14px;color:var(--muted)}
+.copy{align-self:flex-start;margin-top:auto;background:transparent;border:1px solid var(--line);color:var(--chalk);border-radius:8px;padding:5px 10px;font:500 13px var(--f-text);cursor:pointer}
+.copy:hover{border-color:var(--asphalt)}
+.copy:focus-visible,.btn:focus-visible{outline:2px solid var(--wheat);outline-offset:2px}
+.ratio{display:flex;height:14px;border-radius:999px;overflow:hidden}
+.ratio i{display:block}
+.ratiol{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13px;color:var(--muted)}
+
+/* TYPE */
+.types{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+.card{background:var(--panel);border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.spec-h{font:800 clamp(34px,5vw,48px)/1 var(--f-head);letter-spacing:-.035em}
+.spec-t{font:400 17px/1.6 var(--f-text)}
+.scale{display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--line);padding-top:12px}
+.scale div{display:flex;justify-content:space-between;gap:12px;align-items:baseline;font-size:14px;color:var(--muted)}
+.scale b{color:var(--chalk);font-weight:600}
+
+/* TONE */
+.tone{display:grid;grid-template-columns:1.4fr 1fr;gap:12px}
+.rules{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px;counter-reset:r}
+.rules li{display:grid;grid-template-columns:28px 1fr;gap:10px;counter-increment:r}
+.rules li::before{content:counter(r);font:800 16px var(--f-head);color:var(--wheat)}
+.rules b{display:block;font-weight:600}
+.rules span{color:var(--muted);font-size:15px}
+.ban{display:flex;flex-direction:column;gap:10px}
+.ban s{display:block;font:600 18px var(--f-head);color:var(--muted);text-decoration-color:#E5484D;text-decoration-thickness:2px}
+.ban small{color:var(--muted);font-size:13px}
+
+/* POSTS */
+.posts{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:12px;align-items:start}
+.post{background:var(--panel);border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.post .top{display:flex;align-items:center;gap:10px}
+.ava{width:34px;height:34px;border-radius:50%;background:var(--chalk);color:var(--graphite);display:grid;place-items:center;font:800 15px var(--f-head)}
+.post .who{font:700 14px var(--f-head)}
+.post .where{font-size:12px;color:var(--muted)}
+.post .cover{border-radius:12px;background:var(--graphite);border:1px solid var(--line);padding:18px;display:flex;flex-direction:column;gap:8px}
+.post .cover .k{font:800 22px/1.15 var(--f-head);letter-spacing:-.02em}
+.post .cover .num{font:800 34px/1 var(--f-head);color:var(--wheat)}
+.post .body{font-size:15px;display:flex;flex-direction:column;gap:10px}
+.post .fill{background:rgba(232,181,74,.14);color:var(--wheat);border-radius:4px;padding:0 4px}
+.btn{display:inline-flex;align-self:flex-start;align-items:center;gap:8px;border-radius:12px;padding:11px 16px;font:700 15px var(--f-head);color:#fff;background:linear-gradient(180deg,rgba(255,255,255,.18),rgba(255,255,255,0) 60%),var(--cobalt);border:1px solid rgba(255,255,255,.22);box-shadow:inset 0 1px 0 rgba(255,255,255,.25);text-decoration:none}
+.note{font-size:13px;color:var(--muted)}
+
+/* DO / DON'T */
+.dd{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.dd ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:12px}
+.dd li{display:grid;grid-template-columns:22px 1fr;gap:8px;font-size:15px}
+.yes li::before{content:"✓";color:#3FB950;font-weight:700}
+.no li::before{content:"×";color:#E5484D;font-weight:700;font-size:18px;line-height:1.3}
+.dd h3{margin-bottom:6px}
+.demo{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding-top:14px;border-top:1px solid var(--line)}
+.bad-btn{border-radius:12px;padding:11px 16px;font:700 15px var(--f-head);background:#fff;color:#111;border:0}
+.bad-grad{border-radius:12px;padding:11px 16px;font:700 15px var(--f-head);color:#fff;background:linear-gradient(90deg,#7B2FF7,#2F80ED)}
+
+footer{border-top:1px solid var(--line);padding-top:20px;color:var(--muted);font-size:14px;display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between}
+
+@media (max-width:720px){.tone,.dd{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:no-preference){.copy{transition:border-color .15s}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <p class="eyebrow">Брендбук · версия 1 · октябрь 2026</p>
+    <h1 class="brand">babers<span>.</span>studio</h1>
+    <p class="thesis">Сайты для малого бизнеса Ставрополья, которые приводят заявки.</p>
+    <p class="lead">Один человек отвечает за весь сайт: от первого звонка до запуска. Бренд говорит на языке владельца бизнеса: клиенты, звонки, заявки. Всё оформление подчинено одной задаче — чтобы посетитель понял, что делать дальше.</p>
+    <div class="facts">
+      <span class="chip">Ставрополь · Невинномысск · край 26</span>
+      <span class="chip">Малый бизнес</span>
+      <span class="chip">Сайт → Telegram → Instagram</span>
+      <span class="chip">Настроение: рост и результат</span>
+    </div>
+  </header>
+
+  <section id="palette">
+    <div class="sechead">
+      <p class="eyebrow">01 · Палитра</p>
+      <h2>Пять цветов, у каждого одна работа</h2>
+      <p class="lead">Кобальт значит «нажми», пшеница значит «результат». Если цвет стоит не на своём месте, он перестаёт что-то значить.</p>
+    </div>
+    <div class="palette">
+      <div class="sw"><div class="chipc" style="background:#16181D"></div><div class="meta"><span class="name">Графит</span><code>#16181D</code><span class="use">Основной фон сайта, обложек постов и сторис.</span><button class="copy" type="button" data-hex="#16181D">Копировать</button></div></div>
+      <div class="sw"><div class="chipc" style="background:#F2F0EB"></div><div class="meta"><span class="name">Мел</span><code>#F2F0EB</code><span class="use">Заголовки и текст на тёмном; светлый фон для документов и КП.</span><button class="copy" type="button" data-hex="#F2F0EB">Копировать</button></div></div>
+      <div class="sw"><div class="chipc" style="background:#3358FF"></div><div class="meta"><span class="name">Кобальт</span><code>#3358FF</code><span class="use">Только действие: кнопки, ссылки, «Оставить заявку».</span><button class="copy" type="button" data-hex="#3358FF">Копировать</button></div></div>
+      <div class="sw"><div class="chipc" style="background:#E8B54A"></div><div class="meta"><span class="name">Пшеница</span><code>#E8B54A</code><span class="use">Только результат: цифры, сроки, «было → стало». Цвет хлебного края.</span><button class="copy" type="button" data-hex="#E8B54A">Копировать</button></div></div>
+      <div class="sw"><div class="chipc" style="background:#6B7079"></div><div class="meta"><span class="name">Асфальт</span><code>#6B7079</code><span class="use">Подписи, даты, разделители, второстепенный текст.</span><button class="copy" type="button" data-hex="#6B7079">Копировать</button></div></div>
+    </div>
+    <div class="ratio" aria-label="Пропорции цветов на макете">
+      <i style="width:60%;background:#16181D;border:1px solid var(--line)"></i><i style="width:25%;background:#F2F0EB"></i><i style="width:7%;background:#6B7079"></i><i style="width:5%;background:#3358FF"></i><i style="width:3%;background:#E8B54A"></i>
+    </div>
+    <div class="ratiol"><span>Графит ~60%</span><span>Мел ~25%</span><span>Асфальт ~7%</span><span>Кобальт ~5%</span><span>Пшеница ~3%</span></div>
+  </section>
+
+  <section id="type">
+    <div class="sechead">
+      <p class="eyebrow">02 · Шрифты</p>
+      <h2>Manrope для заголовков, Golos Text для текста</h2>
+      <p class="lead">Оба бесплатные, есть в Google Fonts, оба с хорошей кириллицей. Manrope уже стоит на сайте студии, так что менять его не нужно. Golos Text делали специально под русский язык, поэтому длинный текст на нём читается спокойно.</p>
+    </div>
+    <div class="types">
+      <div class="card">
+        <p class="eyebrow">Заголовки · Manrope 800</p>
+        <p class="spec-h">+ заявки с сайта</p>
+        <div class="scale">
+          <div><span>Обложка поста</span><b>48–64 px · 800</b></div>
+          <div><span>Заголовок раздела</span><b>32–36 px · 800</b></div>
+          <div><span>Подзаголовок, кнопка</span><b>18 px · 700</b></div>
+          <div><span>Межбуквенный</span><b>−2…−4%</b></div>
+        </div>
+      </div>
+      <div class="card">
+        <p class="eyebrow">Текст · Golos Text 400</p>
+        <p class="spec-t">Раньше клиенты находили баню только через Яндекс Карты. Теперь у неё есть сайт с ценами, фото и кнопкой записи, и человек решает за минуту.</p>
+        <div class="scale">
+          <div><span>Основной текст</span><b>16–17 px · 400</b></div>
+          <div><span>Подписи, даты</span><b>13–14 px · 500</b></div>
+          <div><span>Метки капсом</span><b>12 px · 600 · +12%</b></div>
+          <div><span>Ширина строки</span><b>до 65 знаков</b></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="tone">
+    <div class="sechead">
+      <p class="eyebrow">03 · Тон постов</p>
+      <h2>Пишу как на звонке с владельцем бизнеса</h2>
+      <p class="lead">Коротко, по делу, с конкретикой. Человек должен понять пользу раньше, чем пролистает.</p>
+    </div>
+    <div class="tone">
+      <div class="card">
+        <h3>5 правил</h3>
+        <ol class="rules">
+          <li><div><b>Говорю «я», а не «мы».</b><span>Я работаю один, и это плюс: вы знаете, кто отвечает за сайт.</span></div></li>
+          <li><div><b>Каждое обещание подкрепляю фактом.</b><span>Срок, цена, пример, скриншот. Пишу только реальные цифры, без округления «до красоты».</span></div></li>
+          <li><div><b>Одна мысль на абзац.</b><span>Два-три предложения, без вводных слов. Пост читают с телефона между делами.</span></div></li>
+          <li><div><b>Слова клиента, а не разработчика.</b><span>Заявки, звонки, запись, Яндекс Карты. Никаких «конверсий» и «UX» без перевода.</span></div></li>
+          <li><div><b>В конце один понятный шаг.</b><span>Что сделать и что человек получит. Один призыв, а не три.</span></div></li>
+        </ol>
+      </div>
+      <div class="card ban">
+        <h3>5 слов, которых у меня не будет</h3>
+        <s>команда профессионалов</s>
+        <s>индивидуальный подход</s>
+        <s>уникальный</s>
+        <s>инновационный</s>
+        <s>качественно</s>
+        <small>Каждое из них можно поставить в пост любой студии, поэтому оно ничего не говорит о моей. Вместо таких слов показываю, что конкретно сделано.</small>
+      </div>
+    </div>
+  </section>
+
+  <section id="posts">
+    <div class="sechead">
+      <p class="eyebrow">04 · Примеры постов</p>
+      <h2>Три поста для Telegram и Instagram</h2>
+      <p class="lead">Кейсы взяты из твоего портфолио. Там, где нужна реальная цифра, стоит жёлтая пометка: подставь данные от клиента или убери строку. Выдуманные результаты в постах не используем.</p>
+    </div>
+    <div class="posts">
+      <article class="post">
+        <div class="top"><div class="ava">b</div><div><div class="who">babers studio</div><div class="where">Кейс · Ставрополь</div></div></div>
+        <div class="cover"><span class="eyebrow">Было → стало</span><span class="k">Лермонтовские бани</span><span class="num">0 → 1 сайт</span></div>
+        <div class="body">
+          <p>У бани в Ставрополе не было сайта, только карточка на Яндекс Картах. Цены, фото и условия люди выспрашивали по телефону.</p>
+          <p>Я сделал сайт, где всё видно сразу: залы, цены, как добраться и кнопка записи на первом экране.</p>
+          <p>Результат за первый месяц: <span class="fill">[сколько заявок пришло с сайта]</span>.</p>
+          <p>Если у вашего бизнеса тоже есть только карточка на картах, напишите. Покажу, как это выглядело бы у вас.</p>
+        </div>
+        <a class="btn" href="https://t.me/babersss">Написать в Telegram</a>
+      </article>
+
+      <article class="post">
+        <div class="top"><div class="ava">b</div><div><div class="who">babers studio</div><div class="where">Полезное · 1 минута</div></div></div>
+        <div class="cover"><span class="eyebrow">Проверьте свой сайт</span><span class="k">3 вещи на первом экране</span></div>
+        <div class="body">
+          <p>Человек решает, остаться ли на сайте, за несколько секунд. За это время он должен увидеть три вещи.</p>
+          <p>1. Что вы делаете и где. «Баня в Ставрополе», а не «Пространство для души».<br>2. Сколько это стоит или хотя бы «от».<br>3. Одну кнопку: записаться, позвонить или написать.</p>
+          <p>Если чего-то нет, заявки уходят к соседу по выдаче.</p>
+          <p>Пришлите ссылку на свой сайт, и я скажу, чего не хватает. Бесплатно.</p>
+        </div>
+        <a class="btn" href="https://t.me/babersss">Прислать ссылку</a>
+      </article>
+
+      <article class="post">
+        <div class="top"><div class="ava">b</div><div><div class="who">babers studio</div><div class="where">Кейс · Невинномысск</div></div></div>
+        <div class="cover"><span class="eyebrow">Агентство недвижимости</span><span class="k">КОДЕКС: заявка за 30 секунд</span></div>
+        <div class="body">
+          <p>Агентству в Невинномысске и Кочубеевском нужен был сайт, откуда человек может сразу оставить заявку.</p>
+          <p>Я сделал короткую форму: ситуация, имя, телефон. Если человеку удобнее мессенджер, заявка с готовым текстом открывается в WhatsApp.</p>
+          <p>Два офиса, отзывы с Яндекс Карт и телефоны видны без прокрутки.</p>
+          <p>Нужен такой же понятный сайт для вашего бизнеса? Напишите, какой у вас бизнес, и я отвечу, с чего начать.</p>
+        </div>
+        <a class="btn" href="https://t.me/babersss">Обсудить сайт</a>
+      </article>
+    </div>
+    <p class="note">Контакт в кнопках: @babersss в Telegram.</p>
+  </section>
+
+  <section id="rules">
+    <div class="sechead">
+      <p class="eyebrow">05 · Оформление</p>
+      <h2>Что можно и чего нельзя</h2>
+    </div>
+    <div class="dd">
+      <div class="card yes">
+        <h3>Можно</h3>
+        <ul>
+          <li><span>Тёмный графитовый фон как основа сайта, обложек и сторис.</span></li>
+          <li><span>Одна кобальтовая кнопка на экран, со стеклянным бликом.</span></li>
+          <li><span>Крупные заголовки Manrope, много воздуха вокруг них.</span></li>
+          <li><span>Пшеничный цвет для цифр и формулы «было → стало».</span></li>
+          <li><span>Настоящие скриншоты сайтов клиентов и фото их бизнеса.</span></li>
+          <li><span>Светлый фон «Мел» для КП, договоров и документов.</span></li>
+        </ul>
+        <div class="demo"><a class="btn" href="#rules">Оставить заявку</a></div>
+      </div>
+      <div class="card no">
+        <h3>Нельзя</h3>
+        <ul>
+          <li><span>Шаблоны конструкторов и готовые темы «как у всех».</span></li>
+          <li><span>Фиолетовые градиенты и неоновые «нейро»-эффекты.</span></li>
+          <li><span>Стоковые фото улыбающихся людей в костюмах.</span></li>
+          <li><span>Плоские белые кнопки на тёмном фоне.</span></li>
+          <li><span>Больше одного призыва к действию в посте или на экране.</span></li>
+          <li><span>Обещания без цифр и навязчивые «успей до пятницы».</span></li>
+          <li><span>Эмодзи вместо пунктов и текст поверх пёстрых фото.</span></li>
+        </ul>
+        <div class="demo"><span class="bad-btn">Оставить заявку</span><span class="bad-grad">Инновационно</span></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>babers studio · сайты для малого бизнеса · Ставрополь и Невинномысск</span>
+    <span>Telegram: @babersss</span>
+  </footer>
+</div>
+
+<script>
+document.querySelectorAll('.copy').forEach(function(b){
+  b.addEventListener('click',function(){
+    var hex=b.getAttribute('data-hex');
+    var done=function(){var t=b.textContent;b.textContent='Скопировано';setTimeout(function(){b.textContent=t},1200)};
+    try{navigator.clipboard.writeText(hex).then(done,function(){b.textContent=hex})}catch(e){b.textContent=hex}
+  });
+});
+</script>
+</body>
+</html>
