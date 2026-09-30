@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Театр Никиты Волкова — арт-пространство для взрослых и детей, Ставрополь</title>
+<meta name="description" content="Камерный театр Никиты Волкова в Ставрополе, улица Мира 460/3. Арт-пространство для взрослых и детей: драма, эксперимент, клоунада, кукольный театр. Билеты от 350 ₽, есть льготные.">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.1/dist/aos.css" integrity="sha384-/rJKQnzOkEo+daG0jMjU1IwwY9unxt1NBw3Ef2fmOJ3PW/TfAg2KXVoWwMZQZtw9" crossorigin="anonymous" referrerpolicy="no-referrer">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/splitting@1.0.6/dist/splitting.css" integrity="sha384-6z/M4zCNHzM59q8BnJ1btvx5I7ArdKNNBgb/V4m7ZTUPI4e2SVF0o5IQAGCO414a" crossorigin="anonymous" referrerpolicy="no-referrer">
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Inter:wght@300;400;500;600&display=swap');
+
+:root{
+  /* Монохром по баннеру театра: чёрный фон, белый рубленый шрифт */
+  --ink:#0A0A0A; --ink-2:#141414; --ink-3:#040404;
+  --paper:#F5F4F1; --paper-2:#E8E6E0; --paper-3:#FBFAF8;
+  --grey:#6E6C68; --grey-l:#9A9894;
+  --line-l:rgba(10,10,10,.14); --line-d:rgba(245,244,241,.18);
+  --display:'Montserrat', Arial, sans-serif;
+  --body:'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;}
+html{overflow-x:hidden;}
+body{margin:0;font-family:var(--body);font-size:17px;line-height:1.7;color:var(--ink);
+     background:var(--paper);overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+img{max-width:100%;display:block;}
+a{text-decoration:none;color:inherit;}
+h1,h2,h3,h4{font-family:var(--display);font-weight:800;margin:0;letter-spacing:-.01em;}
+section{position:relative;}
+.container{width:100%;max-width:1200px;margin:0 auto;padding:0 32px;}
+
+.ic{width:1em;height:1em;display:inline-block;vertical-align:-.14em;fill:none;stroke:currentColor;
+    stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;}
+.ic-f{fill:currentColor;stroke:none;}
+
+#scroll-progress{position:fixed;top:0;left:0;width:0;height:2px;background:var(--paper);z-index:9999;}
+
+/* ---------- ЗНАК: типографский, повторяет верстку баннера ---------- */
+.wordmark{display:flex;flex-direction:column;gap:3px;line-height:1.15;}
+.wordmark u{font-family:var(--display);font-weight:800;font-size:20px;letter-spacing:.14em;
+  text-transform:uppercase;text-decoration:none;}
+.wordmark s{font-family:var(--display);font-weight:600;font-size:13.5px;letter-spacing:.2em;
+  text-transform:uppercase;text-decoration:none;opacity:.9;margin-top:3px;}
+.wordmark b{font-family:var(--body);font-weight:500;font-size:9px;letter-spacing:.26em;
+  text-transform:uppercase;opacity:.5;margin-top:7px;}
+
+/* ---------- NAV ---------- */
+#nav{position:fixed;top:0;left:0;width:100%;height:92px;z-index:1000;background:transparent;color:var(--paper);
+  transition:height .3s ease,background-color .3s ease,box-shadow .3s ease,backdrop-filter .3s ease;}
+#nav .container{height:100%;display:flex;align-items:center;justify-content:space-between;gap:24px;}
+#nav.scrolled{height:68px;background:rgba(10,10,10,.96);backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);box-shadow:0 1px 0 rgba(245,244,241,.16);}
+#nav.scrolled .wordmark b{display:none;}
+.nav-right{display:flex;align-items:center;gap:28px;}
+.nav-links{display:flex;align-items:center;gap:26px;list-style:none;margin:0;padding:0;}
+.nav-links a{position:relative;color:var(--paper);font-size:14px;font-weight:400;padding:4px 0;letter-spacing:.02em;}
+.nav-links a::after{content:'';position:absolute;left:0;bottom:0;height:1.5px;width:100%;background:var(--paper);
+  transform:scaleX(0);transform-origin:right;transition:transform .35s cubic-bezier(.65,.05,.36,1);}
+.nav-links a:hover::after{transform:scaleX(1);transform-origin:left;}
+.nav-phone{display:flex;align-items:center;gap:8px;color:var(--paper);font-size:15px;font-weight:500;
+  white-space:nowrap;animation:navPulse 6s ease-in-out infinite;}
+@keyframes navPulse{0%,100%{opacity:1;transform:scale(1);}8%{opacity:.68;transform:scale(1.02);}16%{opacity:1;transform:scale(1);}}
+
+.btn{position:relative;overflow:hidden;display:inline-flex;align-items:center;justify-content:center;gap:9px;
+  font-family:var(--body);font-weight:600;text-align:center;border:none;cursor:pointer;border-radius:2px;
+  z-index:1;transition:color .35s ease;letter-spacing:.02em;}
+.btn > *{position:relative;z-index:2;}
+.btn::before{content:'';position:absolute;inset:0;z-index:1;transform:scaleX(0);transform-origin:left;
+  transition:transform .38s cubic-bezier(.65,.05,.36,1);}
+.btn:hover::before{transform:scaleX(1);}
+.btn-invert{background:var(--paper);color:var(--ink);}.btn-invert::before{background:#fff;}
+.btn-solid{background:var(--ink);color:var(--paper);}.btn-solid::before{background:#2E2E2E;}
+.btn-line{background:transparent;color:var(--paper);border:1px solid rgba(245,244,241,.42);}
+.btn-line::before{background:var(--paper);}.btn-line:hover{color:var(--ink);}
+.btn-line-dark{background:transparent;color:var(--ink);border:1px solid var(--line-l);}
+.btn-line-dark::before{background:var(--ink);}.btn-line-dark:hover{color:var(--paper);}
+.nav-cta{font-size:13.5px;padding:11px 22px;}
+
+.burger{display:none;width:30px;height:18px;position:relative;cursor:pointer;background:none;border:none;padding:0;}
+.burger span{position:absolute;left:0;height:2px;width:100%;background:var(--paper);transition:.3s ease;}
+.burger span:nth-child(1){top:0;}.burger span:nth-child(2){top:8px;}.burger span:nth-child(3){top:16px;}
+.burger.open span:nth-child(1){top:8px;transform:rotate(45deg);}
+.burger.open span:nth-child(2){opacity:0;}
+.burger.open span:nth-child(3){top:8px;transform:rotate(-45deg);}
+#mobile-menu{position:fixed;inset:0;z-index:999;background:var(--ink);display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:22px;opacity:0;visibility:hidden;transform:translateY(-16px);
+  transition:opacity .38s ease,transform .38s ease,visibility .38s;}
+#mobile-menu.open{opacity:1;visibility:visible;transform:translateY(0);}
+#mobile-menu a{font-family:var(--display);font-size:30px;font-weight:800;color:var(--paper);text-transform:uppercase;letter-spacing:.02em;}
+#mobile-menu a:hover{opacity:.6;}
+#mobile-menu .mm-phone{font-family:var(--body);font-size:18px;font-weight:500;margin-top:12px;text-transform:none;letter-spacing:0;}
+
+/* ---------- HERO ---------- */
+#hero{position:relative;height:100vh;min-height:660px;overflow:hidden;background:var(--ink-3);}
+#hero::before{content:'';position:absolute;inset:0;z-index:0;
+  background:
+    radial-gradient(115% 85% at 66% 6%, rgba(245,244,241,.16) 0%, rgba(245,244,241,.05) 34%, transparent 64%),
+    radial-gradient(85% 65% at 20% 100%, rgba(245,244,241,.06) 0%, transparent 58%),
+    linear-gradient(180deg,#0C0C0C 0%,#040404 100%);
+  animation:stageLight 28s ease-in-out infinite alternate;}
+@keyframes stageLight{
+  0%  {transform:translate3d(0,0,0) scale(1);}
+  50% {transform:translate3d(-1.1%,.7%,0) scale(1.02);}
+  100%{transform:translate3d(.9%,-.5%,0) scale(1.015);}}
+#hero::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(to top,rgba(4,4,4,.72) 0%,transparent 40%);}
+#particles{position:absolute;inset:0;z-index:1;pointer-events:none;}
+.hero-inner{position:relative;z-index:2;height:100%;display:flex;align-items:center;padding-top:96px;}
+.hero-left{width:100%;max-width:860px;}
+.hero-label{font-size:11.5px;color:rgba(245,244,241,.6);text-transform:uppercase;letter-spacing:.34em;
+  font-weight:500;margin-bottom:30px;}
+/* clamp вместо фиксированного кегля: длинные слова вроде «ВЗАИМОПРОНИКАЮТ»
+   не помещаются на узком экране при жёстких 38px */
+.hero-headline{font-size:clamp(25px, 7vw, 74px);line-height:1.04;color:var(--paper);font-weight:800;
+  margin-bottom:26px;text-transform:uppercase;letter-spacing:-.015em;
+  overflow-wrap:break-word;hyphens:auto;}
+.hero-headline .word{display:inline-block;}
+.hero-sub{font-size:20px;color:rgba(245,244,241,.7);line-height:1.65;max-width:620px;margin-bottom:36px;}
+.hero-btns{display:flex;gap:14px;margin-bottom:28px;flex-wrap:wrap;}
+.hero-btns .btn{font-size:15.5px;padding:15px 30px;}
+.hero-meta{font-size:13px;color:rgba(245,244,241,.5);letter-spacing:.02em;}
+.hero-meta .stars{color:var(--paper);letter-spacing:2px;}
+
+/* ---------- БЕГУЩАЯ СТРОКА: инверсия ---------- */
+#marquee{background:var(--paper);padding:14px 0;overflow:hidden;}
+.marquee-track{display:flex;width:max-content;animation:marquee 34s linear infinite;}
+@keyframes marquee{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+.marquee-set{display:flex;align-items:center;flex-shrink:0;}
+.marquee-set span{display:flex;align-items:center;gap:9px;font-family:var(--display);font-size:11.5px;
+  text-transform:uppercase;letter-spacing:.18em;font-weight:600;color:var(--ink);padding:0 24px;white-space:nowrap;}
+
+/* ---------- ЦИФРЫ ---------- */
+#numbers{background:var(--paper);padding:76px 0;border-top:1px solid var(--line-l);}
+.num-grid{display:grid;grid-template-columns:repeat(4,1fr);}
+.num-item{text-align:center;padding:0 18px;position:relative;}
+.num-item + .num-item::before{content:'';position:absolute;left:0;top:14%;height:72%;width:1px;background:var(--line-l);}
+.num-val{font-family:var(--display);font-size:56px;font-weight:800;color:var(--ink);line-height:1;letter-spacing:-.02em;}
+.num-val .suffix{font-size:30px;}
+.num-label{font-size:11.5px;text-transform:uppercase;letter-spacing:.18em;color:var(--grey);margin-top:14px;font-weight:500;}
+
+/* ---------- заголовки ---------- */
+.sec-label{font-size:11.5px;text-transform:uppercase;letter-spacing:.32em;font-weight:600;
+  margin-bottom:20px;color:var(--grey);}
+.sec-head{font-size:54px;line-height:1.05;margin-bottom:20px;color:var(--ink);text-transform:uppercase;letter-spacing:-.015em;}
+.sec-sub{font-size:18px;color:var(--grey);max-width:620px;line-height:1.75;margin:0;}
+.on-dark .sec-label{color:rgba(245,244,241,.55);}
+.on-dark .sec-head{color:var(--paper);}
+.on-dark .sec-sub{color:rgba(245,244,241,.6);}
+
+/* ---------- РЕПЕРТУАР ---------- */
+#repertoire{background:var(--ink);padding:104px 0;}
+.rep-list{margin-top:56px;border-top:1px solid var(--line-d);}
+.rep-item{display:grid;grid-template-columns:96px 1fr 250px;gap:32px;align-items:start;
+  padding:38px 0;border-bottom:1px solid var(--line-d);transition:background-color .4s ease;}
+.rep-item:hover{background:rgba(245,244,241,.035);}
+.rep-num{font-family:var(--display);font-size:44px;font-weight:800;color:rgba(245,244,241,.2);line-height:.9;
+  transition:color .4s ease;letter-spacing:-.02em;}
+.rep-item:hover .rep-num{color:var(--paper);}
+.rep-body h3{font-size:33px;color:var(--paper);margin-bottom:10px;line-height:1.1;text-transform:uppercase;}
+.rep-genre{font-size:15px;color:rgba(245,244,241,.55);margin:0 0 14px;text-transform:uppercase;letter-spacing:.14em;font-weight:500;}
+.rep-body p{font-size:16px;color:rgba(245,244,241,.66);line-height:1.7;margin:0;max-width:560px;}
+.rep-meta{display:flex;flex-direction:column;gap:12px;padding-top:6px;}
+.rep-tag{display:flex;align-items:center;gap:10px;font-size:14px;color:rgba(245,244,241,.7);}
+.rep-tag .ic{color:rgba(245,244,241,.5);font-size:16px;}
+.rep-price{font-family:var(--display);font-size:24px;font-weight:800;color:var(--paper);margin-top:4px;letter-spacing:-.01em;}
+.rep-price small{font-family:var(--body);font-size:13px;font-weight:400;color:rgba(245,244,241,.5);display:block;margin-top:3px;letter-spacing:0;}
+.rep-note{margin-top:40px;display:flex;gap:14px;align-items:flex-start;
+  border-left:2px solid rgba(245,244,241,.4);padding:16px 22px;font-size:15.5px;
+  color:rgba(245,244,241,.72);line-height:1.7;}
+.rep-note .ic{font-size:19px;margin-top:4px;}
+.rep-note a{color:var(--paper);border-bottom:1px solid rgba(245,244,241,.4);}
+
+/* ---------- О ТЕАТРЕ ---------- */
+#about{background:var(--paper-2);padding:104px 0;}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start;}
+.about-quote{font-family:var(--display);font-weight:700;font-size:33px;line-height:1.25;color:var(--ink);
+  margin:0 0 26px;padding-left:26px;border-left:3px solid var(--ink);letter-spacing:-.01em;}
+.about-quote cite{display:block;font-family:var(--body);font-style:normal;font-size:11.5px;font-weight:500;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--grey);margin-top:20px;}
+.about-text p{font-size:17.5px;line-height:1.8;color:var(--ink);margin:0 0 20px;}
+.about-text p:last-child{margin-bottom:0;}
+.about-list{list-style:none;padding:0;margin:30px 0 0;}
+.about-list li{display:flex;gap:14px;align-items:flex-start;font-size:16.5px;line-height:1.55;color:var(--ink);margin-bottom:16px;}
+.about-list .ic{font-size:19px;margin-top:3px;}
+
+/* ---------- БИЛЕТЫ ---------- */
+#tickets{background:var(--ink-2);padding:104px 0;}
+.tick-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:52px;}
+.tick-card{background:rgba(245,244,241,.045);border:1px solid var(--line-d);border-radius:2px;padding:38px;}
+.tick-card h3{font-size:25px;color:var(--paper);margin-bottom:16px;text-transform:uppercase;}
+.tick-card p{font-size:16px;color:rgba(245,244,241,.66);line-height:1.7;margin:0 0 20px;}
+.tick-rows{list-style:none;padding:0;margin:0;}
+.tick-rows li{display:flex;align-items:baseline;gap:14px;padding:14px 0;border-bottom:1px dashed var(--line-d);}
+.tick-rows li:last-child{border-bottom:none;}
+.tick-rows .t-name{font-size:15.5px;color:rgba(245,244,241,.85);}
+.tick-rows .t-dots{flex:1;border-bottom:1px dotted rgba(245,244,241,.24);transform:translateY(-4px);}
+.tick-rows .t-val{font-family:var(--display);font-size:22px;font-weight:800;color:var(--paper);white-space:nowrap;}
+.tick-card .btn{width:100%;font-size:15.5px;padding:15px;margin-top:24px;}
+
+/* ---------- ЗРИТЕЛИ ---------- */
+#voices{background:var(--paper);padding:104px 0;}
+.v-head{text-align:center;margin-bottom:56px;}
+.v-head h2{font-size:54px;color:var(--ink);margin-bottom:14px;text-transform:uppercase;letter-spacing:-.015em;}
+.v-head p{font-size:18px;color:var(--grey);margin:0;}
+.v-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:24px;}
+.v-card{flex:0 1 calc((100% - 72px) / 4);min-width:0;background:var(--paper-3);border:1px solid var(--line-l);
+  border-radius:2px;padding:32px;}
+.v-card .ic{font-size:26px;margin-bottom:18px;}
+.v-card h3{font-size:19px;color:var(--ink);margin-bottom:10px;text-transform:uppercase;}
+.v-card p{font-size:15.5px;color:var(--grey);line-height:1.7;margin:0;}
+.v-foot{text-align:center;margin-top:42px;font-size:14.5px;color:var(--grey);}
+.v-foot b{color:var(--ink);font-weight:600;}
+
+/* ---------- CTA ---------- */
+#cta{background:var(--ink);padding:100px 0;text-align:center;}
+#cta .cta-label{font-size:11.5px;text-transform:uppercase;letter-spacing:.32em;color:rgba(245,244,241,.55);
+  font-weight:600;margin-bottom:22px;}
+#cta h2{font-size:52px;line-height:1.08;color:var(--paper);max-width:800px;margin:0 auto 20px;
+  text-transform:uppercase;letter-spacing:-.015em;}
+#cta .cta-sub{font-size:19px;color:rgba(245,244,241,.66);max-width:620px;margin:0 auto 30px;line-height:1.7;}
+.cta-phone{display:inline-flex;align-items:center;gap:14px;font-family:var(--display);font-size:42px;
+  font-weight:800;color:var(--paper);margin-bottom:30px;letter-spacing:-.02em;}
+.cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+#cta .btn{font-size:16px;padding:16px 34px;}
+.cta-note{font-size:13px;color:rgba(245,244,241,.44);margin-top:26px;}
+
+/* ---------- КОНТАКТЫ ---------- */
+#contact{background:var(--paper-2);padding:100px 0;}
+#contact h2{font-size:50px;color:var(--ink);margin-bottom:44px;text-transform:uppercase;letter-spacing:-.015em;}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;}
+.c-title{font-family:var(--display);font-size:25px;font-weight:800;color:var(--ink);margin-bottom:12px;text-transform:uppercase;}
+.c-sub{font-size:17px;color:var(--grey);margin:0 0 28px;}
+.c-line{display:flex;align-items:flex-start;gap:15px;font-size:17px;margin-bottom:20px;color:var(--ink);}
+.c-line .ic{font-size:19px;margin-top:4px;}
+.c-phone{font-size:23px;font-weight:600;color:var(--ink);}
+.c-card{background:var(--paper-3);border:1px solid var(--line-l);border-radius:2px;padding:34px;}
+.c-card h3{font-size:22px;margin-bottom:14px;color:var(--ink);text-transform:uppercase;}
+.c-card p{font-size:16px;color:var(--grey);line-height:1.7;margin:0 0 22px;}
+.c-card .btn{width:100%;font-size:15.5px;padding:15px;margin-bottom:12px;}
+.c-card .btn:last-child{margin-bottom:0;}
+.map-wrap{margin-top:48px;border:1px solid var(--line-l);border-radius:2px;overflow:hidden;background:var(--paper-3);}
+.map-wrap iframe{display:block;width:100%;height:420px;border:0;}
+.map-foot{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+  padding:16px 20px;border-top:1px solid var(--line-l);font-size:14.5px;color:var(--grey);}
+.map-foot a{color:var(--ink);font-weight:600;border-bottom:1px solid var(--line-l);}
+.access{margin-top:26px;padding:18px 20px;background:rgba(10,10,10,.05);border-left:3px solid var(--ink);
+  font-size:15px;line-height:1.65;color:var(--ink);}
+
+/* ---------- ПОДВАЛ ---------- */
+#footer{background:var(--ink-3);border-top:1px solid var(--line-d);padding:60px 0 28px;color:var(--paper);}
+#footer .wordmark{margin-bottom:20px;}
+.f-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:48px;}
+.f-tag{font-size:14.5px;color:rgba(245,244,241,.55);margin:0 0 22px;max-width:320px;line-height:1.7;}
+.f-social{display:flex;gap:12px;}
+.f-social a{width:38px;height:38px;border-radius:2px;background:rgba(245,244,241,.07);display:flex;
+  align-items:center;justify-content:center;font-size:17px;color:rgba(245,244,241,.75);transition:.3s ease;}
+.f-social a:hover{background:var(--paper);color:var(--ink);}
+.f-head{font-size:11.5px;text-transform:uppercase;letter-spacing:.24em;color:rgba(245,244,241,.55);font-weight:600;margin-bottom:20px;}
+.f-list{list-style:none;padding:0;margin:0;}
+.f-list li{margin-bottom:12px;}
+.f-list a,.f-list span{font-size:14.5px;color:rgba(245,244,241,.7);transition:color .3s ease;
+  display:flex;gap:10px;align-items:flex-start;}
+.f-list a:hover{color:var(--paper);}
+.f-list .ic{color:rgba(245,244,241,.4);font-size:16px;margin-top:3px;}
+.f-divider{height:1px;background:var(--line-d);margin:44px 0 0;}
+.f-bottom{margin-top:26px;text-align:center;}
+.f-bottom p{font-size:13px;color:rgba(245,244,241,.36);margin:0;}
+
+/* ---------- КНОПКА ЗВОНКА ---------- */
+#call-btn{position:fixed;right:20px;bottom:20px;z-index:9999;width:56px;height:56px;border-radius:50%;
+  background:var(--ink);color:var(--paper);border:1px solid rgba(245,244,241,.35);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 22px rgba(0,0,0,.45);animation:pulse 2.6s ease infinite;
+  pointer-events:auto;-webkit-tap-highlight-color:transparent;}
+#call-btn .ic{font-size:21px;stroke-width:1.9;}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(245,244,241,.34);}50%{box-shadow:0 0 0 12px rgba(245,244,241,0);}}
+#call-btn::before{content:'Позвонить';pointer-events:none;position:absolute;bottom:70px;right:0;
+  background:var(--paper);color:var(--ink);font-family:var(--body);font-size:13px;font-weight:500;
+  padding:8px 14px;border-radius:2px;white-space:nowrap;opacity:0;visibility:hidden;
+  transform:translateY(6px);transition:.28s ease;}
+#call-btn::after{content:'';pointer-events:none;position:absolute;bottom:62px;right:22px;
+  border:6px solid transparent;border-top-color:var(--paper);opacity:0;visibility:hidden;
+  transform:translateY(6px);transition:.28s ease;}
+@media (hover:hover){#call-btn:hover::before,#call-btn:hover::after{opacity:1;visibility:visible;transform:translateY(0);}}
+
+/* ---------- АДАПТИВ ---------- */
+@media (max-width:1100px){
+  .nav-phone{display:none;}
+  .nav-right{gap:20px;}
+  .nav-links{gap:18px;}
+  .nav-links a{font-size:13.5px;}
+  .v-card{flex:0 1 calc((100% - 24px) / 2);}
+  .rep-item{grid-template-columns:72px 1fr;}
+  .rep-meta{grid-column:2;flex-direction:row;flex-wrap:wrap;gap:22px;align-items:center;padding-top:18px;}
+  .rep-price{margin-top:0;}
+}
+@media (max-width:1024px){
+  .about-grid,.tick-grid,.contact-grid{grid-template-columns:1fr;gap:40px;}
+  .f-grid{grid-template-columns:1fr 1fr;gap:36px;}
+}
+@media (max-width:400px){
+  .wordmark u{font-size:15px;letter-spacing:.1em;}
+  .wordmark s{font-size:10.5px;letter-spacing:.16em;}
+  .wordmark b{display:none;}
+}
+@media (max-width:900px){
+  .nav-links,.nav-phone,.nav-cta{display:none;}
+  .burger{display:block;}
+  .wordmark b{display:none;}
+}
+@media (max-width:768px){
+  .container{padding:0 20px;}
+  #nav,#nav.scrolled{height:66px;background:rgba(10,10,10,.95);backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);box-shadow:0 1px 0 rgba(245,244,241,.16);}
+  #nav.menu-open{background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:none;}
+  .wordmark u{font-size:17px;letter-spacing:.11em;}
+  .wordmark s{font-size:11.5px;letter-spacing:.18em;}
+  .wordmark b{display:none;}
+  .hero-inner{padding-top:66px;}
+  #mobile-menu{padding-top:66px;}
+  #hero{min-height:560px;height:90vh;}
+  .hero-sub{font-size:18px;}
+  .hero-btns{flex-direction:column;width:100%;}
+  .hero-btns .btn{width:100%;}
+  .num-grid{grid-template-columns:1fr 1fr;row-gap:42px;}
+  .num-item + .num-item::before{display:none;}
+  .num-val{font-size:42px;}
+  .sec-head,.v-head h2,#cta h2,#contact h2{font-size:31px;}
+  .rep-item{grid-template-columns:1fr;gap:0;padding:30px 0;}
+  .rep-num{font-size:30px;margin-bottom:10px;}
+  .rep-body h3{font-size:25px;}
+  .rep-meta{grid-column:1;flex-direction:column;gap:10px;align-items:flex-start;}
+  .about-quote{font-size:24px;padding-left:18px;}
+  .map-wrap iframe{height:300px;}
+  .v-card{flex:0 1 100%;}
+  .cta-phone{font-size:29px;}
+  .cta-btns{flex-direction:column;}
+  #cta .btn{width:100%;}
+  .f-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<div id="scroll-progress"></div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></symbol>
+<symbol id="i-tg" viewBox="0 0 24 24" class="ic-f"><path d="M21.5 4.3L18.6 19c-.2 1-.8 1.2-1.6.75l-4.5-3.3-2.2 2.1c-.24.24-.44.44-.9.44l.32-4.6L18.1 6.7c.36-.32-.08-.5-.56-.18L7.2 13.1l-4.4-1.4c-.96-.3-.98-.96.2-1.42l17.2-6.6c.8-.3 1.5.18 1.24 1.3z"/></symbol>
+<symbol id="i-vk" viewBox="0 0 24 24" class="ic-f"><path d="M12.8 16.9c-5.3 0-8.5-3.7-8.6-9.8h2.7c.1 4.5 2.1 6.4 3.6 6.8V7.1h2.5v3.9c1.5-.2 3.1-1.9 3.6-3.9h2.5c-.4 2.5-2 4.2-3.2 4.9 1.2.6 3 2.1 3.7 4.9h-2.8c-.5-1.7-2-3.1-3.8-3.3v3.3z"/></symbol>
+<symbol id="i-pin" viewBox="0 0 24 24"><path d="M20 10.5c0 6-8 11.5-8 11.5S4 16.5 4 10.5a8 8 0 0 1 16 0z"/><circle cx="12" cy="10.2" r="2.8"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2"/><path d="M12 6.8V12l3.4 2"/></symbol>
+<symbol id="i-star" viewBox="0 0 24 24" class="ic-f"><path d="M12 2.5l2.9 5.9 6.6 1-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-1z"/></symbol>
+<symbol id="i-message" viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-8.6 8 9 9 0 0 1-3.7-.8L3 21l1.8-5.4A8 8 0 0 1 4 12a8 8 0 0 1 8-8 8 8 0 0 1 9 8z"/><path d="M8.5 12h.01M12 12h.01M15.5 12h.01"/></symbol>
+<symbol id="i-ticket" viewBox="0 0 24 24"><path d="M3 8.5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v1.2a2.3 2.3 0 0 0 0 4.6v1.2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1.2a2.3 2.3 0 0 0 0-4.6z"/><path d="M14 6.5v2M14 11v2M14 15.5v2"/></symbol>
+<symbol id="i-mask" viewBox="0 0 24 24"><path d="M4 5.5h16v6.8c0 4.6-3.6 8.2-8 9.2-4.4-1-8-4.6-8-9.2z"/><path d="M8.5 10.2h.01M15.5 10.2h.01"/><path d="M9 15.5c1.8 1.4 4.2 1.4 6 0"/></symbol>
+<symbol id="i-users" viewBox="0 0 24 24"><path d="M16 20v-1.6a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4V20"/><circle cx="9" cy="7.5" r="3.6"/><path d="M22 20v-1.6a4 4 0 0 0-3-3.9M16.5 4.1a4 4 0 0 1 0 7"/></symbol>
+<symbol id="i-heart" viewBox="0 0 24 24"><path d="M20.4 5.6a5 5 0 0 0-7 0L12 7l-1.4-1.4a5 5 0 1 0-7 7L12 21l8.4-8.4a5 5 0 0 0 0-7z"/></symbol>
+<symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2"/><path d="M12 11v5.5M12 7.8h.01"/></symbol>
+<symbol id="i-age" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2"/><path d="M9 9.5h2v5M13.5 9.5h1.8a1.2 1.2 0 0 1 0 2.4h-1.8v2.6h2.2"/></symbol>
+<symbol id="i-car" viewBox="0 0 24 24"><path d="M5 16.5V19a1 1 0 0 1-1 1H3.5a1 1 0 0 1-1-1v-2.5M21.5 16.5V19a1 1 0 0 1-1 1H20a1 1 0 0 1-1-1v-2.5"/><path d="M2.5 16.5v-4l2-5.5a2 2 0 0 1 1.9-1.3h11.2A2 2 0 0 1 19.5 7l2 5.5v4z"/><path d="M4 12.5h16M6.5 15h2M15.5 15h2"/></symbol>
+</defs></svg>
+
+<!-- ================= NAV ================= -->
+<header id="nav">
+  <div class="container">
+    <a href="#hero" class="wordmark" aria-label="Театр Никиты Волкова — на главную">
+      <u>Театр</u><s>Никиты Волкова</s><b>Арт-пространство · Ставрополь</b>
+    </a>
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><a href="#repertoire">Репертуар</a></li>
+        <li><a href="#about">О театре</a></li>
+        <li><a href="#tickets">Билеты</a></li>
+        <li><a href="#voices">Зрители</a></li>
+        <li><a href="#contact">Контакты</a></li>
+      </ul>
+      <a href="tel:+79188677505" class="nav-phone"><svg class="ic"><use href="#i-phone"/></svg>+7 (918) 867-75-05</a>
+      <a href="https://t.me/volkovtheatre" target="_blank" rel="noopener" class="btn btn-invert nav-cta"><svg class="ic"><use href="#i-tg"/></svg><span>Афиша</span></a>
+      <button class="burger" id="burger" aria-label="Меню"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<nav id="mobile-menu">
+  <a href="#repertoire">Репертуар</a>
+  <a href="#about">О театре</a>
+  <a href="#tickets">Билеты</a>
+  <a href="#voices">Зрители</a>
+  <a href="#contact">Контакты</a>
+  <a href="tel:+79188677505" class="mm-phone">+7 (918) 867-75-05</a>
+</nav>
+
+<!-- ================= HERO ================= -->
+<section id="hero">
+  <div id="particles"></div>
+  <div class="hero-inner">
+    <div class="container">
+      <div class="hero-left">
+        <div class="hero-label">Арт-пространство для взрослых и детей · Ставрополь</div>
+        <h1 class="hero-headline" data-splitting="words">Зал и сцена взаимопроникают друг в друга</h1>
+        <p class="hero-sub">Камерный театр на улице Мира, где между вами и артистом нет ни оркестровой ямы, ни двадцатого ряда. Драма, эксперимент, клоунада и кукольный театр.</p>
+        <div class="hero-btns">
+          <a href="#repertoire" class="btn btn-invert"><span>Смотреть репертуар</span></a>
+          <a href="https://t.me/volkovtheatre" target="_blank" rel="noopener" class="btn btn-line"><svg class="ic"><use href="#i-tg"/></svg><span>Афиша и даты</span></a>
+        </div>
+        <div class="hero-meta"><span class="stars">★★★★★</span> &nbsp;5.0 в 2ГИС · 4.3 на Яндекс.Картах · <span style="white-space:nowrap">билеты от 350 ₽</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= БЕГУЩАЯ СТРОКА ================= -->
+<section id="marquee">
+  <div class="marquee-track">
+    <div class="marquee-set">
+      <span><svg class="ic"><use href="#i-mask"/></svg>Камерная сцена</span><span>·</span>
+      <span><svg class="ic"><use href="#i-ticket"/></svg>Билеты от 350 ₽</span><span>·</span>
+      <span><svg class="ic"><use href="#i-users"/></svg>Есть льготные билеты</span><span>·</span>
+      <span><svg class="ic"><use href="#i-heart"/></svg>Спектакли для детей</span><span>·</span>
+      <span><svg class="ic"><use href="#i-star"/></svg>5.0 в 2ГИС</span><span>·</span>
+      <span><svg class="ic"><use href="#i-car"/></svg>Парковка для людей с инвалидностью</span><span>·</span>
+      <span><svg class="ic"><use href="#i-tg"/></svg>Афиша в Telegram</span><span>·</span>
+    </div>
+    <div class="marquee-set" aria-hidden="true">
+      <span><svg class="ic"><use href="#i-mask"/></svg>Камерная сцена</span><span>·</span>
+      <span><svg class="ic"><use href="#i-ticket"/></svg>Билеты от 350 ₽</span><span>·</span>
+      <span><svg class="ic"><use href="#i-users"/></svg>Есть льготные билеты</span><span>·</span>
+      <span><svg class="ic"><use href="#i-heart"/></svg>Спектакли для детей</span><span>·</span>
+      <span><svg class="ic"><use href="#i-star"/></svg>5.0 в 2ГИС</span><span>·</span>
+      <span><svg class="ic"><use href="#i-car"/></svg>Парковка для людей с инвалидностью</span><span>·</span>
+      <span><svg class="ic"><use href="#i-tg"/></svg>Афиша в Telegram</span><span>·</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ЦИФРЫ ================= -->
+<section id="numbers">
+  <div class="container">
+    <div class="num-grid">
+      <div class="num-item">
+        <div class="num-val">5.0</div>
+        <div class="num-label">рейтинг в 2ГИС</div>
+      </div>
+      <div class="num-item">
+        <div class="num-val">4.3</div>
+        <div class="num-label">на Яндекс.Картах</div>
+      </div>
+      <div class="num-item">
+        <div class="num-val"><span class="counter" data-target="11">0</span></div>
+        <div class="num-label">отзывов на двух площадках</div>
+      </div>
+      <div class="num-item">
+        <div class="num-val"><span class="counter" data-target="350">0</span><span class="suffix"> ₽</span></div>
+        <div class="num-label">билет от</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= РЕПЕРТУАР ================= -->
+<section id="repertoire" class="on-dark">
+  <div class="container">
+    <div class="sec-label" data-aos="fade-up">Репертуар</div>
+    <h2 class="sec-head" data-aos="fade-up" data-aos-delay="80">Что идёт на нашей сцене</h2>
+    <p class="sec-sub" data-aos="fade-up" data-aos-delay="160">Постоянные постановки театра. Ближайшие даты и точное время объявляем в Telegram-канале. Бронь мест — по телефону.</p>
+
+    <div class="rep-list">
+
+      <article class="rep-item" data-aos="fade-up">
+        <div class="rep-num">01</div>
+        <div class="rep-body">
+          <h3>Пушкин Stand Up</h3>
+          <p class="rep-genre">Трагикомический монолог</p>
+          <p>Биография поэта, рассказанная языком стендапа: от насмешки к боли и обратно. Спектакль идёт в двух действиях.</p>
+        </div>
+        <div class="rep-meta">
+          <div class="rep-tag"><svg class="ic"><use href="#i-clock"/></svg>2 часа с антрактом</div>
+          <div class="rep-price">от 500 ₽<small>превью — 350 ₽</small></div>
+        </div>
+      </article>
+
+      <article class="rep-item" data-aos="fade-up" data-aos-delay="60">
+        <div class="rep-num">02</div>
+        <div class="rep-body">
+          <h3>Маленький принц</h3>
+          <p class="rep-genre">По повести Антуана де Сент-Экзюпери</p>
+          <p>История, которую одинаково слышат дети и взрослые — каждый на своей глубине.</p>
+        </div>
+        <div class="rep-meta">
+          <div class="rep-tag"><svg class="ic"><use href="#i-heart"/></svg>Для семейного просмотра</div>
+          <div class="rep-price">от 500 ₽</div>
+        </div>
+      </article>
+
+      <article class="rep-item" data-aos="fade-up" data-aos-delay="120">
+        <div class="rep-num">03</div>
+        <div class="rep-body">
+          <h3>Раневская Stand Up</h3>
+          <p class="rep-genre">Монолог о великой актрисе</p>
+          <p>Фаина Раневская — её реплики, её одиночество и её ирония, собранные в один вечер на камерной сцене.</p>
+        </div>
+        <div class="rep-meta">
+          <div class="rep-tag"><svg class="ic"><use href="#i-clock"/></svg>1 час 50 минут</div>
+          <div class="rep-tag"><svg class="ic"><use href="#i-age"/></svg>18+</div>
+          <div class="rep-price">уточняйте</div>
+        </div>
+      </article>
+
+      <article class="rep-item" data-aos="fade-up" data-aos-delay="180">
+        <div class="rep-num">04</div>
+        <div class="rep-body">
+          <h3>Я люблю эту жизнь</h3>
+          <p class="rep-genre">Клоунада для двух артистов</p>
+          <p>Через язык клоунады театр говорит о зависимости, созависимости и о том, как из этого выбираются. Спектакль для взрослой аудитории.</p>
+        </div>
+        <div class="rep-meta">
+          <div class="rep-tag"><svg class="ic"><use href="#i-clock"/></svg>1 час 40 минут с антрактом</div>
+          <div class="rep-tag"><svg class="ic"><use href="#i-age"/></svg>16+</div>
+          <div class="rep-price">уточняйте</div>
+        </div>
+      </article>
+
+    </div>
+
+    <div class="rep-note" data-aos="fade-up">
+      <svg class="ic"><use href="#i-info"/></svg>
+      <span>Даты меняются от месяца к месяцу, поэтому мы не печатаем их на сайте. Актуальная афиша и время начала — в <a href="https://t.me/volkovtheatre" target="_blank" rel="noopener">Telegram-канале театра</a>. Бронь мест — по телефону <a href="tel:+79188677505">+7&nbsp;(918)&nbsp;867-75-05</a>.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= О ТЕАТРЕ ================= -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div data-aos="fade-right">
+        <div class="sec-label">О театре</div>
+        <blockquote class="about-quote">
+          В камерном театре зал и сцена взаимопроникают друг в друга.
+          <cite>Театр Никиты Волкова</cite>
+        </blockquote>
+        <ul class="about-list">
+          <li><svg class="ic"><use href="#i-mask"/></svg><span>Драматические и экспериментальные постановки</span></li>
+          <li><svg class="ic"><use href="#i-heart"/></svg><span>Спектакли для детей и семейного просмотра</span></li>
+          <li><svg class="ic"><use href="#i-users"/></svg><span>Кукольный театр</span></li>
+          <li><svg class="ic"><use href="#i-ticket"/></svg><span>Льготные билеты для отдельных категорий зрителей</span></li>
+        </ul>
+      </div>
+      <div class="about-text" data-aos="fade-left" data-aos-delay="120">
+        <p>Камерный формат означает буквально следующее: между вами и артистом нет ни оркестровой ямы, ни двадцатого ряда. Вы видите, как дрожит рука, слышите, как меняется дыхание, и оказываетесь не наблюдателем, а участником происходящего.</p>
+        <p>Такой зал прощает меньше, чем большая сцена, — здесь невозможно спрятаться за декорацией или громкостью. Поэтому репертуар держится на актёрской работе: монолог, диалог, клоунада, кукла.</p>
+        <p>Театр играет и для взрослых, и для детей. Одни спектакли идут с маркировкой 16+ и 18+ и говорят о трудных вещах прямо, другие — семейные, на них приходят всей семьёй. Возрастную категорию мы указываем в репертуаре заранее, чтобы вечер не стал неожиданностью.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= БИЛЕТЫ ================= -->
+<section id="tickets" class="on-dark">
+  <div class="container">
+    <div class="sec-label" data-aos="fade-up">Билеты</div>
+    <h2 class="sec-head" data-aos="fade-up" data-aos-delay="80">Как попасть на спектакль</h2>
+    <p class="sec-sub" data-aos="fade-up" data-aos-delay="160">Мест в камерном зале немного, поэтому на премьеры лучше бронировать заранее.</p>
+
+    <div class="tick-grid">
+      <div class="tick-card" data-aos="fade-up">
+        <h3>Стоимость</h3>
+        <p>Цена зависит от спектакля и от того, идёт он в превью или уже в основном репертуаре.</p>
+        <ul class="tick-rows">
+          <li><span class="t-name">Превью спектакля</span><span class="t-dots"></span><span class="t-val">350 ₽</span></li>
+          <li><span class="t-name">Основной репертуар</span><span class="t-dots"></span><span class="t-val">от 500 ₽</span></li>
+          <li><span class="t-name">Льготный билет</span><span class="t-dots"></span><span class="t-val">есть</span></li>
+        </ul>
+        <a href="tel:+79188677505" class="btn btn-invert"><svg class="ic"><use href="#i-phone"/></svg><span>Уточнить стоимость</span></a>
+      </div>
+
+      <div class="tick-card" data-aos="fade-up" data-aos-delay="120">
+        <h3>Бронирование</h3>
+        <p>Даты и время начала публикуем в Telegram-канале. Забронировать место можно по телефону — сейчас это единственный способ занять место заранее.</p>
+        <ul class="tick-rows">
+          <li><span class="t-name">Telegram-канал с афишей</span><span class="t-dots"></span><span class="t-val">@volkovtheatre</span></li>
+          <li><span class="t-name">Телефон театра</span><span class="t-dots"></span><span class="t-val">867-75-05</span></li>
+        </ul>
+        <a href="https://t.me/volkovtheatre" target="_blank" rel="noopener" class="btn btn-line"><svg class="ic"><use href="#i-tg"/></svg><span>Открыть афишу в Telegram</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ЗРИТЕЛИ ================= -->
+<section id="voices">
+  <div class="container">
+    <div class="v-head">
+      <h2 data-aos="fade-up">Что отмечают зрители</h2>
+      <p data-aos="fade-up" data-aos-delay="100">По отзывам на Яндекс.Картах и в 2ГИС</p>
+    </div>
+    <div class="v-grid">
+      <div class="v-card" data-aos="fade-up">
+        <svg class="ic"><use href="#i-mask"/></svg>
+        <h3>Актёрская работа</h3>
+        <p>Мастерство исполнения — то, о чём в отзывах пишут в первую очередь.</p>
+      </div>
+      <div class="v-card" data-aos="fade-up" data-aos-delay="80">
+        <svg class="ic"><use href="#i-users"/></svg>
+        <h3>Камерность</h3>
+        <p>Небольшой зал и близость сцены, из-за которых спектакль воспринимается иначе.</p>
+      </div>
+      <div class="v-card" data-aos="fade-up" data-aos-delay="160">
+        <svg class="ic"><use href="#i-heart"/></svg>
+        <h3>Тёплая атмосфера</h3>
+        <p>Зрители отмечают вовлечённость зала и ощущение общего разговора.</p>
+      </div>
+      <div class="v-card" data-aos="fade-up" data-aos-delay="240">
+        <svg class="ic"><use href="#i-message"/></svg>
+        <h3>Повод подумать</h3>
+        <p>Постановки, после которых размышляют о собственном пути, а не расходятся молча.</p>
+      </div>
+    </div>
+    <p class="v-foot" data-aos="fade-up">Обобщено по <b>11 отзывам</b> на двух площадках. В 2ГИС — <b>5.0 из 5</b> (2 оценки), на Яндекс.Картах — <b>4.3 из 5</b> (13 оценок).</p>
+  </div>
+</section>
+
+<!-- ================= CTA ================= -->
+<section id="cta" class="on-dark">
+  <div class="container">
+    <div class="cta-label">Улица Мира, 460/3</div>
+    <h2 data-aos="fade-up">Придите один раз — и большой зал уже не будет прежним</h2>
+    <p class="cta-sub" data-aos="fade-up" data-aos-delay="120">Узнайте ближайшие даты и займите место: в камерном зале их немного.</p>
+    <a href="tel:+79188677505" class="cta-phone" data-aos="fade-up" data-aos-delay="180"><svg class="ic"><use href="#i-phone"/></svg>+7 (918) 867-75-05</a>
+    <div class="cta-btns" data-aos="fade-up" data-aos-delay="230">
+      <a href="https://t.me/volkovtheatre" target="_blank" rel="noopener" class="btn btn-invert"><svg class="ic"><use href="#i-tg"/></svg><span>Открыть афишу в Telegram</span></a>
+      <a href="tel:+79188677505" class="btn btn-line"><span>Позвонить и забронировать</span></a>
+    </div>
+    <p class="cta-note">Билеты от 350 ₽ · есть льготные · спектакли для детей и взрослых</p>
+  </div>
+</section>
+
+<!-- ================= КОНТАКТЫ ================= -->
+<section id="contact">
+  <div class="container">
+    <h2 data-aos="fade-up">Как нас найти</h2>
+    <div class="contact-grid">
+      <div data-aos="fade-up">
+        <div class="c-title">Театр Никиты Волкова</div>
+        <p class="c-sub">Арт-пространство для взрослых и детей</p>
+
+        <div class="c-line"><svg class="ic"><use href="#i-pin"/></svg><span>улица Мира, 460/3<br>Ставрополь</span></div>
+        <div class="c-line"><svg class="ic"><use href="#i-phone"/></svg><a href="tel:+79188677505" class="c-phone">+7 (918) 867-75-05</a></div>
+        <div class="c-line"><svg class="ic"><use href="#i-tg"/></svg><a href="https://t.me/volkovtheatre" target="_blank" rel="noopener">@volkovtheatre — афиша театра</a></div>
+        <div class="c-line"><svg class="ic"><use href="#i-clock"/></svg><span>Театр работает по расписанию спектаклей — сверяйтесь с афишей</span></div>
+
+        <div class="access">
+          <b>Доступная среда.</b> У театра есть парковочные места для людей с инвалидностью. Полностью безбарьерного входа для колясок пока нет. Если вам нужна помощь при входе в зал, позвоните заранее и уточните возможности.
+        </div>
+      </div>
+
+      <div class="c-card" data-aos="fade-up" data-aos-delay="120">
+        <h3>Забронировать место</h3>
+        <p>Даты и время начала смотрите в Telegram-канале. Бронируйте место по телефону — там же ответят про льготный билет и помощь при входе.</p>
+        <a href="tel:+79188677505" class="btn btn-solid"><svg class="ic"><use href="#i-phone"/></svg><span>Позвонить +7 (918) 867-75-05</span></a>
+        <a href="https://t.me/volkovtheatre" target="_blank" rel="noopener" class="btn btn-line-dark"><svg class="ic"><use href="#i-tg"/></svg><span>Открыть афишу в Telegram</span></a>
+      </div>
+    </div>
+
+    <div class="map-wrap" data-aos="fade-up">
+      <iframe
+        src="https://yandex.ru/map-widget/v1/?text=%D0%A1%D1%82%D0%B0%D0%B2%D1%80%D0%BE%D0%BF%D0%BE%D0%BB%D1%8C%2C%20%D1%83%D0%BB%D0%B8%D1%86%D0%B0%20%D0%9C%D0%B8%D1%80%D0%B0%2C%20460%2F3&amp;z=17"
+        title="Театр Никиты Волкова на карте — Ставрополь, улица Мира, 460/3"
+        loading="lazy" allowfullscreen></iframe>
+      <div class="map-foot">
+        <span>Ставрополь, улица Мира, 460/3</span>
+        <a href="https://yandex.ru/maps/org/teatr_nikity_volkova/96402052690/" target="_blank" rel="noopener">Открыть в Яндекс.Картах</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ПОДВАЛ ================= -->
+<footer id="footer">
+  <div class="container">
+    <div class="f-grid">
+      <div>
+        <span class="wordmark"><u>Театр</u><s>Никиты Волкова</s><b>Арт-пространство · Ставрополь</b></span>
+        <p class="f-tag">Камерная сцена на улице Мира, 460/3. Драма, эксперимент, клоунада и спектакли для детей.</p>
+        <div class="f-social">
+          <a href="https://t.me/volkovtheatre" target="_blank" rel="noopener" aria-label="Telegram-канал"><svg class="ic"><use href="#i-tg"/></svg></a>
+          <a href="https://vk.ru/id332753733" target="_blank" rel="noopener" aria-label="ВКонтакте"><svg class="ic"><use href="#i-vk"/></svg></a>
+          <a href="tel:+79188677505" aria-label="Позвонить"><svg class="ic"><use href="#i-phone"/></svg></a>
+        </div>
+      </div>
+
+      <div>
+        <div class="f-head">Репертуар</div>
+        <ul class="f-list">
+          <li><a href="#repertoire">Пушкин Stand Up</a></li>
+          <li><a href="#repertoire">Маленький принц</a></li>
+          <li><a href="#repertoire">Раневская Stand Up</a></li>
+          <li><a href="#repertoire">Я люблю эту жизнь</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="f-head">Зрителям</div>
+        <ul class="f-list">
+          <li><a href="#tickets">Билеты и бронь</a></li>
+          <li><a href="#about">О театре</a></li>
+          <li><a href="#contact">Как добраться</a></li>
+          <li><a href="tel:+79188677505"><svg class="ic"><use href="#i-phone"/></svg>+7 (918) 867-75-05</a></li>
+          <li><span><svg class="ic"><use href="#i-pin"/></svg>ул. Мира, 460/3</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="f-divider"></div>
+    <div class="f-bottom"><p>© 2026 Театр Никиты Волкова · Ставрополь, улица Мира, 460/3</p></div>
+  </div>
+</footer>
+
+<a href="tel:+79188677505" id="call-btn" aria-label="Позвонить"><svg class="ic"><use href="#i-phone"/></svg></a>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" integrity="sha384-d+vyQ0dYcymoP8ndq2hW7FGC50nqGdXUEgoOUGxbbkAJwZqL7h+jKN0GGgn9hFDS" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/splitting@1.0.6/dist/splitting.min.js" integrity="sha384-taxnKSnzdVS5gZB4jZcieFZlmBPQMFqhdEmCScZsrIFCxX8Zizq4fKJJH5kBwMXT" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js" integrity="sha384-gZSNMuUgSbqcltOBBRNXCH+szg+2C69ISFyCk2w+xsZc0iFU+bIVPfYPmLwLtNzz" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js" integrity="sha384-li4UtcFCH6QeUqR4JyV58/VgTprMuz9aauj+oWtew7V4Y7ZVjnvz5px9Y3UCG0Ea" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.1/dist/aos.js" integrity="sha384-wziAfh6b/qT+3LrqebF9WeK4+J5sehS6FA10J1t3a866kJ/fvU5UwofWnQyzLtwu" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+  /* 1. Lenis — первым, с циклом RAF */
+  try {
+    var LenisCtor = window.Lenis || (window.lenis && window.lenis.default);
+    if (LenisCtor) {
+      var lenis = new LenisCtor({ lerp: 0.08 });
+      function raf(t){ lenis.raf(t); requestAnimationFrame(raf); }
+      requestAnimationFrame(raf);
+      document.querySelectorAll('a[href^="#"]').forEach(function(a){
+        a.addEventListener('click', function(e){
+          var t = document.querySelector(a.getAttribute('href'));
+          if (t) { e.preventDefault(); lenis.scrollTo(t, { offset: -66 }); }
+        });
+      });
+    }
+  } catch (e) {}
+
+  /* 2. AOS — после Lenis */
+  /* AOS прячет элементы своим CSS. Если скрипт не загрузился, снимаем атрибуты,
+     иначе половина страницы останется невидимой. */
+  if (window.AOS) {
+    /* В превью-рамке портфолио AOS не может посчитать позиции и половина
+     страницы остаётся невидимой — там анимацию появления отключаем. */
+  if (window.self !== window.top) {
+    document.querySelectorAll('[data-aos]').forEach(function(el){ el.removeAttribute('data-aos'); });
+  }
+  AOS.init({ duration: 750, once: true, offset: 80 });
+  } else {
+    document.querySelectorAll('[data-aos]').forEach(function(el){ el.removeAttribute('data-aos'); });
+  }
+
+  /* 3. Шапка и полоса прогресса */
+  var nav = document.getElementById('nav'), bar = document.getElementById('scroll-progress');
+  function onScroll(){
+    var y = window.scrollY || window.pageYOffset;
+    nav.classList.toggle('scrolled', y > 80);
+    bar.style.width = (y / (document.body.scrollHeight - window.innerHeight) * 100) + '%';
+  }
+  window.addEventListener('scroll', onScroll); onScroll();
+
+  /* 4. Мобильное меню */
+  var burger = document.getElementById('burger'), mm = document.getElementById('mobile-menu');
+  burger.addEventListener('click', function(){
+    burger.classList.toggle('open'); mm.classList.toggle('open');
+    nav.classList.toggle('menu-open', mm.classList.contains('open'));
+    document.body.style.overflow = mm.classList.contains('open') ? 'hidden' : '';
+  });
+  mm.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){
+      burger.classList.remove('open'); mm.classList.remove('open');
+      nav.classList.remove('menu-open'); document.body.style.overflow = '';
+    });
+  });
+
+  /* 5. Пылинки в луче света */
+  if (window.tsParticles) {
+    tsParticles.load('particles', {
+      fullScreen: { enable: false },
+      particles: {
+        number: { value: 16 },
+        color: { value: '#F5F4F1' },
+        opacity: { value: .12, random: true, animation: { enable: true, speed: .35, minimumValue: .03, sync: false } },
+        size: { value: 1.6, random: true },
+        move: { enable: true, speed: .28, direction: 'top', random: true, straight: false, outModes: 'out' },
+        shape: { type: 'circle' }
+      },
+      detectRetina: true
+    });
+  }
+
+  /* 6. Splitting -> GSAP: единственная анимация при загрузке */
+  if (window.Splitting) Splitting({ target: '.hero-headline', by: 'words' });
+  if (window.gsap) {
+    /* Прячем ТОЛЬКО когда есть чем показать обратно: если GSAP не загрузился,
+       надзаголовок, описание и кнопки просто остаются видимыми. */
+    gsap.set('.hero-headline', { opacity: 1 });
+    var heroTl = gsap.timeline({ paused: true })
+      .from('.hero-headline .word', { y: 44, opacity: 0, duration: .85, stagger: .075, ease: 'power3.out' })
+      .from('.hero-label', { opacity: 0, duration: .5 }, .1)
+      .from('.hero-sub',   { opacity: 0, duration: .6 }, '-=0.3')
+      .from('.hero-btns',  { opacity: 0, duration: .6 }, '-=0.35');
+    var heroEl = document.getElementById('hero');
+    if (heroEl && 'IntersectionObserver' in window) {
+      var heroIo = new IntersectionObserver(function (entries) {
+        if (entries[0].isIntersecting) { heroTl.play(); heroIo.disconnect(); }
+      }, { threshold: .1 });
+      heroIo.observe(heroEl);
+    } else { heroTl.play(); }
+    setTimeout(function () { if (heroTl.progress() < 1) heroTl.progress(1); }, 4000);
+  }
+
+  /* 7. Счётчики: IntersectionObserver + GSAP expo.out */
+  var nums = document.getElementById('numbers');
+  if (nums && window.gsap) {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if (!en.isIntersecting) return;
+        en.target.querySelectorAll('.counter').forEach(function(el){
+          var target = parseFloat(el.getAttribute('data-target'));
+          gsap.to(el, { innerHTML: target, duration: 2, ease: 'expo.out', snap: { innerHTML: 1 },
+            onUpdate: function(){ el.textContent = Math.round(gsap.getProperty(el, 'innerHTML')); }});
+        });
+        io.unobserve(en.target);
+      });
+    }, { threshold: .35 });
+    io.observe(nums);
+  }
+
+});
+</script>
+</body>
+</html>
