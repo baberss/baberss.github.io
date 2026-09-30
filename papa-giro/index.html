@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PaPa Giro — гирос, шаурма и бургеры в Невинномысске</title>
+<meta name="description" content="PaPa Giro на Калинина, 149Б в Невинномысске: гирос, пита, сувлаки, шаурма, бургеры, картофель и десерты. Соберите заказ на сайте и отправьте одним сообщением в мессенджер.">
+<meta name="theme-color" content="#14110F">
+<meta name="color-scheme" content="light">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@600;700;800&display=swap">
+
+<style>
+:root{
+  --ink:#14110F; --ink-2:#2E2724; --grey:#6B615B; --grey-l:#665C57;
+  --paper:#FFFFFF; --cream:#FFF7EF; --cream-2:#F6EADD; --line:rgba(20,17,15,.12);
+  --accent:#D4451F;        /* белое на нём — 4,6:1 */
+  --accent-d:#AF3313;
+  --amber:#F0A21C;
+  --sans:'Manrope',-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;
+  --disp:'Unbounded',var(--sans);
+  --shadow:0 2px 6px rgba(20,17,15,.06),0 18px 44px rgba(20,17,15,.12);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:92px}
+body{margin:0;font-family:var(--sans);font-size:17px;line-height:1.6;color:var(--ink);background:var(--cream);
+  -webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+h1,h2,h3{margin:0;line-height:1.08;letter-spacing:-.02em}
+h1,h2{font-family:var(--disp);font-weight:800}
+p{margin:0}
+ul{margin:0;padding:0;list-style:none}
+button{font-family:inherit}
+.wrap{width:100%;max-width:1220px;margin:0 auto;padding:0 24px}
+@media(max-width:620px){.wrap{padding:0 16px}}
+.eyebrow{font-size:12.5px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}
+
+/* ---------- КНОПКИ ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;border:0;cursor:pointer;
+  font-weight:800;font-size:16px;padding:15px 24px;border-radius:999px;transition:.2s;white-space:nowrap}
+.btn-main{background:var(--accent);color:#fff}
+.btn-main:hover{background:var(--accent-d)}
+.btn-dark{background:var(--ink);color:#fff}
+.btn-dark:hover{background:#000}
+.btn-ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.btn-ghost:hover{border-color:var(--ink)}
+.btn-wa{background:#128C4B;color:#fff}
+.btn-wa:hover{background:#0E6E3B}
+.btn-tg{background:#1E6FA8;color:#fff}
+.btn-tg:hover{background:#17587F}
+.btn-sm{font-size:15px;padding:11px 18px}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+
+/* ---------- ШАПКА ---------- */
+header{position:sticky;top:0;z-index:60;background:rgba(255,247,239,.94);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.hd{display:flex;align-items:center;gap:20px;height:72px}
+.logo{font-family:var(--disp);font-weight:800;font-size:22px;letter-spacing:-.03em;flex:none}
+.logo span{color:var(--accent)}
+.hd-nav{display:flex;gap:22px;font-size:15px;font-weight:600;color:var(--ink-2);margin-left:auto}
+.hd-nav a:hover{color:var(--accent)}
+.hd-tel{font-weight:800;white-space:nowrap}
+.burger{display:none;background:none;border:0;cursor:pointer;min-width:44px;min-height:44px;
+  padding:10px;place-items:center;margin-left:auto}
+.burger span{display:block;width:24px;height:2px;background:var(--ink);border-radius:2px}
+.burger span+span{margin-top:6px}
+#mnav{display:none;border-top:1px solid var(--line);background:var(--paper);padding-block:8px 16px}
+#mnav a{display:block;padding:13px 0;font-weight:700;border-bottom:1px solid var(--line)}
+#mnav a:last-child{border-bottom:0}
+
+/* ---------- ГЕРОЙ ---------- */
+/* Фон героя работает и без фотографии: если файла нет, img снимается
+   обработчиком onerror и остаётся градиент. */
+.hero{position:relative;overflow:hidden;color:#fff;isolation:isolate;
+  background:radial-gradient(900px 520px at 78% 12%,rgba(212,69,31,.42),transparent 62%),
+             radial-gradient(700px 420px at 96% 86%,rgba(240,162,28,.24),transparent 60%),
+             linear-gradient(160deg,#1C1613 0%,#14110F 55%,#0C0A09 100%)}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:60% 50%;opacity:.55}
+.hero::after{content:'';position:absolute;inset:0;
+  background:linear-gradient(92deg,rgba(20,17,15,.95) 0%,rgba(20,17,15,.85) 38%,rgba(20,17,15,.25) 72%,rgba(20,17,15,.1) 100%),
+             linear-gradient(0deg,rgba(20,17,15,.6),transparent 55%)}
+.hero-in{position:relative;z-index:2;padding:86px 0 78px;max-width:660px}
+.hero h1{font-size:clamp(36px,5.4vw,64px);margin-top:16px}
+.hero h1 em{font-style:normal;color:var(--amber)}
+.hero p.sub{margin-top:20px;font-size:19px;line-height:1.55;color:rgba(255,255,255,.86);max-width:44ch}
+.hero-btns{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px 26px;margin-top:30px;font-size:15px;color:rgba(255,255,255,.8)}
+.hero-meta b{color:#fff}
+.rate{display:inline-flex;align-items:center;gap:8px}
+.rate .n{font-family:var(--disp);font-weight:800;font-size:22px;color:var(--amber)}
+
+/* ---------- ЛЕНТА ПРЕИМУЩЕСТВ ---------- */
+.strip{background:var(--ink);color:#fff;border-top:1px solid rgba(255,255,255,.1)}
+.strip ul{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,.12)}
+.strip li{background:var(--ink);padding:22px 20px;font-size:15px;color:rgba(255,255,255,.82)}
+.strip li b{display:block;font-weight:800;color:#fff;font-size:16px;margin-bottom:4px}
+
+/* ---------- МЕНЮ ---------- */
+main{padding-bottom:120px}
+.sec{padding:72px 0 0}
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:26px}
+.sec-head h2{font-size:clamp(26px,3.2vw,38px)}
+.sec-head .note{font-size:14.5px;color:var(--grey);max-width:38ch}
+
+.cat{margin-bottom:56px;scroll-margin-top:96px}
+.cat-band{position:relative;border-radius:20px;overflow:hidden;margin-bottom:22px;
+  background:radial-gradient(620px 320px at 88% 20%,rgba(212,69,31,.5),transparent 64%),
+             linear-gradient(100deg,#1C1613 0%,#241B16 58%,#3A251A 100%);
+  aspect-ratio:21/6;display:flex;align-items:flex-end}
+.cat-band img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 55%}
+.cat-band::after{content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,rgba(20,17,15,.9) 0%,rgba(20,17,15,.62) 42%,rgba(20,17,15,.05) 78%)}
+.cat-band .t{position:relative;z-index:2;padding:22px 26px;color:#fff}
+.cat-band .t h3{font-family:var(--disp);font-weight:700;font-size:clamp(20px,2.6vw,30px)}
+.cat-band .t span{display:block;margin-top:5px;font-size:14px;color:rgba(255,255,255,.78)}
+
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:18px 18px 16px;
+  display:flex;flex-direction:column;gap:10px;transition:border-color .2s,transform .2s,box-shadow .2s}
+.card:hover{border-color:transparent;box-shadow:var(--shadow);transform:translateY(-2px)}
+.card h4{margin:0;font-size:16.5px;font-weight:700;line-height:1.25;letter-spacing:-.01em}
+.card .hint{font-size:13.5px;color:var(--grey);margin-top:-4px}
+.card .row{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:10px;padding-top:6px}
+.price{font-family:var(--disp);font-weight:700;font-size:19px;white-space:nowrap}
+.add{border:0;background:var(--ink);color:#fff;width:38px;height:38px;border-radius:50%;
+  font-size:21px;line-height:1;cursor:pointer;flex:none;transition:.18s}
+.add:hover{background:var(--accent)}
+.add.in{background:var(--accent)}
+
+/* ---------- КОРЗИНА ---------- */
+.cart-fab{position:fixed;left:50%;transform:translateX(-50%) translateY(140%);bottom:18px;z-index:70;
+  display:flex;align-items:center;gap:14px;background:var(--ink);color:#fff;border:0;cursor:pointer;
+  padding:14px 18px 14px 22px;border-radius:999px;box-shadow:0 14px 40px rgba(20,17,15,.4);
+  font-weight:800;font-size:16px;transition:transform .28s cubic-bezier(.2,.8,.3,1)}
+.cart-fab.show{transform:translateX(-50%) translateY(0)}
+.cart-fab .sum{background:var(--accent);padding:7px 14px;border-radius:999px}
+
+.sheet{position:fixed;inset:0;z-index:90;display:none}
+.sheet.open{display:block}
+.sheet-bg{position:absolute;inset:0;background:rgba(20,17,15,.55)}
+.sheet-in{position:absolute;right:0;top:0;bottom:0;width:min(460px,100%);background:var(--cream);
+  display:flex;flex-direction:column;box-shadow:-20px 0 60px rgba(0,0,0,.3)}
+.sheet-hd{display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:20px 22px;border-bottom:1px solid var(--line)}
+.sheet-hd h3{font-family:var(--disp);font-size:20px;font-weight:700}
+.x{background:none;border:0;font-size:26px;line-height:1;cursor:pointer;color:var(--grey);
+  min-width:44px;min-height:44px}
+.sheet-body{flex:1;overflow-y:auto;padding:16px 22px}
+.li{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.li .nm{flex:1;font-weight:600;font-size:15.5px}
+.li .pr{font-weight:800;white-space:nowrap}
+.qty{display:flex;align-items:center;gap:4px;background:var(--paper);border:1px solid var(--line);
+  border-radius:999px;padding:3px}
+.qty button{width:32px;height:32px;border:0;background:none;font-size:18px;cursor:pointer;
+  border-radius:50%;color:var(--ink)}
+.qty button:hover{background:var(--cream-2)}
+.qty span{min-width:22px;text-align:center;font-weight:800;font-size:15px}
+.empty{padding:40px 0;text-align:center;color:var(--grey)}
+
+.up{margin-top:18px;background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:16px}
+.up h4{margin:0 0 4px;font-size:15px;font-weight:800}
+.up p{font-size:13.5px;color:var(--grey);margin-bottom:12px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line);background:var(--cream);border-radius:999px;padding:9px 14px;
+  font-size:14px;font-weight:700;cursor:pointer;transition:.18s}
+.chip:hover{border-color:var(--accent);color:var(--accent)}
+.chip small{font-weight:600;color:var(--grey);margin-left:6px}
+
+.sheet-ft{border-top:1px solid var(--line);padding:18px 22px 22px;background:var(--paper)}
+.tot{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:14px}
+.tot b{font-family:var(--disp);font-size:26px;font-weight:800}
+.send{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.send .btn{width:100%}
+.ft-note{margin-top:12px;font-size:12.5px;color:var(--grey);line-height:1.45}
+
+/* ---------- КОНТАКТЫ ---------- */
+.contact{background:var(--ink);color:#fff;margin-top:40px;padding:72px 0}
+.ct-grid{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:start}
+.ct-grid h2{font-size:clamp(26px,3.2vw,38px);color:#fff}
+.ct-list{margin-top:26px}
+.ct-list div{padding:14px 0;border-bottom:1px solid rgba(255,255,255,.14);display:flex;
+  justify-content:space-between;gap:18px;flex-wrap:wrap;font-size:16px}
+.ct-list span:first-child{color:rgba(255,255,255,.66)}
+.ct-list b{font-weight:800}
+.ct-tel{display:block;font-family:var(--disp);font-size:clamp(24px,3vw,32px);font-weight:800;margin:24px 0 18px}
+.map{border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,.16);height:100%;min-height:340px}
+.map iframe{width:100%;height:100%;min-height:340px;border:0;display:block}
+
+footer{background:#0B0908;color:rgba(255,255,255,.55);font-size:14px;padding:30px 0}
+.ft{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap}
+footer a{text-decoration:underline;text-underline-offset:3px}
+footer a:hover{color:#fff}
+
+/* ---------- АДАПТИВ ---------- */
+@media(max-width:1080px){
+  .hd-nav{display:none}
+  .burger{display:grid}
+  .hd-tel{margin-left:auto}
+  #mnav.open{display:block}
+  .grid{grid-template-columns:repeat(3,1fr)}
+  .strip ul{grid-template-columns:repeat(2,1fr)}
+  .ct-grid{grid-template-columns:1fr;gap:28px}
+}
+@media(max-width:760px){
+  .grid{grid-template-columns:repeat(2,1fr)}
+  .hero-in{padding:56px 0 52px}
+  .hero>img{object-position:70% 50%}
+  .cat-band{aspect-ratio:16/7}
+  .sec{padding-top:48px}
+  .contact{padding:52px 0}
+}
+@media(max-width:430px){
+  body{font-size:16px}
+  .hd-tel{font-size:15px}
+  .card{padding:14px}
+  .card h4{font-size:15px}
+  .send{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important}
+  .card:hover{transform:none}
+}
+.skip{position:absolute;left:0;top:0;z-index:200;background:var(--accent);color:#fff;padding:12px 18px;
+  font-weight:800;border-radius:0 0 10px 0;transform:translateY(-200%)}
+.skip:focus{transform:translateY(0)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:6px}
+.hero :focus-visible,.contact :focus-visible,.strip :focus-visible{outline-color:var(--amber)}
+#main:focus{outline:none}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style>
+</head>
+<body>
+
+<a class="skip" href="#main">Перейти к меню</a>
+
+<header>
+  <div class="wrap hd">
+    <a class="logo" href="#top">PaPa <span>Giro</span></a>
+    <nav class="hd-nav" aria-label="Разделы меню">
+      <a href="#shawarma">Шаурма</a>
+      <a href="#gyros">Гирос и пита</a>
+      <a href="#burgers">Бургеры</a>
+      <a href="#snacks">Закуски</a>
+      <a href="#salads">Салаты</a>
+      <a href="#sweets">Десерты</a>
+      <a href="#contacts">Контакты</a>
+    </nav>
+    <a class="hd-tel" href="tel:+79899801010">+7 (989) 980-10-10</a>
+    <button class="burger" id="burger" type="button" aria-label="Меню"
+            aria-expanded="false" aria-controls="mnav"><span></span><span></span><span></span></button>
+  </div>
+  <nav id="mnav" aria-label="Мобильное меню">
+    <div class="wrap">
+      <a href="#shawarma">Шаурма и роллы</a>
+      <a href="#gyros">Гирос, пита, сувлаки</a>
+      <a href="#burgers">Бургеры</a>
+      <a href="#snacks">Закуски</a>
+      <a href="#salads">Салаты и супы</a>
+      <a href="#sweets">Десерты</a>
+      <a href="#drinks">Напитки</a>
+      <a href="#contacts">Контакты</a>
+    </div>
+  </nav>
+</header>
+
+<section class="hero" id="top">
+  <img src="/papa-giro/img/hero-1920.webp"
+       srcset="/papa-giro/img/hero-1280.webp 1280w, /papa-giro/img/hero-1920.webp 1920w, /papa-giro/img/hero-2560.webp 2560w"
+       sizes="100vw" width="1920" height="1080" alt="" fetchpriority="high" decoding="async"
+       onerror="this.remove()">
+  <div class="wrap">
+    <div class="hero-in">
+      <p class="eyebrow">Невинномысск · Калинина, 149Б</p>
+      <h1>Гирос, шаурма<br>и бургеры <em>навынос</em></h1>
+      <p class="sub">Соберите заказ прямо на сайте и отправьте одним сообщением в мессенджер — перезвоним и подтвердим.</p>
+      <div class="hero-btns">
+        <a class="btn btn-main" href="#main">Собрать заказ</a>
+        <a class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.4)" href="tel:+79899801010">Позвонить</a>
+      </div>
+      <div class="hero-meta">
+        <span class="rate"><span class="n">4,4</span> <span>951 оценка на Яндекс Картах</span></span>
+        <span><b>До 23:00</b> каждый день</span>
+        <span><b>Доставка</b> и навынос</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="strip">
+  <div class="wrap">
+    <ul>
+      <li><b>Готовим при вас</b>Гирос и шаурма собираются под заказ</li>
+      <li><b>Средний чек 270–300 ₽</b>Сытно и без переплаты</li>
+      <li><b>Детская комната</b>Есть где занять ребёнка</li>
+      <li><b>Оплата как удобно</b>Карта, СБП, наличные, QR</li>
+    </ul>
+  </div>
+</div>
+
+<main id="main" tabindex="-1">
+  <div class="wrap">
+    <section class="sec">
+      <div class="sec-head">
+        <div>
+          <p class="eyebrow">Меню</p>
+          <h2 style="margin-top:12px">Выбирайте и добавляйте</h2>
+        </div>
+        <p class="note">Нажмите «плюс» — позиция попадёт в заказ. В конце отправите список в WhatsApp или Telegram.</p>
+      </div>
+      <div id="menu"></div>
+    </section>
+  </div>
+</main>
+
+<section class="contact" id="contacts">
+  <div class="wrap">
+    <div class="ct-grid">
+      <div>
+        <p class="eyebrow">Контакты</p>
+        <h2 style="margin-top:14px">Заезжайте или закажите доставку</h2>
+        <a class="ct-tel" href="tel:+79899801010">+7 (989) 980-10-10</a>
+        <div class="ct-list">
+          <div><span>Адрес</span><b>ул. Калинина, 149Б, Невинномысск</b></div>
+          <div><span>Работаем</span><b>ежедневно до 23:00</b></div>
+          <div><span>Оплата</span><b>карта, СБП, наличные, QR</b></div>
+          <div><span>Можно</span><b>доставка, навынос, кофе с собой</b></div>
+        </div>
+      </div>
+      <div class="map">
+        <iframe loading="lazy" title="PaPa Giro на Яндекс Картах: ул. Калинина, 149Б, Невинномысск"
+          src="https://yandex.ru/map-widget/v1/?mode=search&amp;oid=75762186112&amp;ol=biz&amp;z=17"></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap ft">
+    <span>PaPa Giro · ул. Калинина, 149Б, Невинномысск</span>
+    <span>Сайт — <a href="https://baberss.github.io" target="_blank" rel="noopener">babers studio</a></span>
+  </div>
+</footer>
+
+<button class="cart-fab" id="fab" type="button" hidden>
+  <span id="fabCount">Заказ</span>
+  <span class="sum" id="fabSum">0 ₽</span>
+</button>
+
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+  <div class="sheet-bg" data-close></div>
+  <div class="sheet-in">
+    <div class="sheet-hd">
+      <h3 id="sheetTitle">Ваш заказ</h3>
+      <button class="x" type="button" data-close aria-label="Закрыть">×</button>
+    </div>
+    <div class="sheet-body">
+      <div id="lines"></div>
+      <div class="up" id="upsell" hidden>
+        <h4 id="upTitle">Добавить к заказу?</h4>
+        <p id="upText"></p>
+        <div class="chips" id="upChips"></div>
+      </div>
+    </div>
+    <div class="sheet-ft">
+      <div class="tot"><span>Итого</span><b id="total">0 ₽</b></div>
+      <div class="send">
+        <button class="btn btn-wa" id="sendWa" type="button">В WhatsApp</button>
+        <button class="btn btn-tg" id="sendTg" type="button">В Telegram</button>
+      </div>
+      <p class="ft-note">Заказ уйдёт готовым сообщением — останется нажать «отправить». Адрес доставки и время напишите в том же чате.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ==========================================================================
+   Данные меню. Источник — карточка PaPa Giro на Яндекс Картах, раздел «Меню»,
+   снято 15.09.2026. На карточке стоит пометка «Давно не обновлялось»,
+   поэтому цены перед публикацией нужно сверить с заведением.
+
+   Соусы (категория sauces) — ЗАГОТОВКА. На карточке их нет вообще:
+   ни списка, ни цен. Названия и цена 50 ₽ проставлены как заглушка,
+   чтобы показать механику допродажи. Заменить на реальные.
+   ========================================================================== */
+var SAUCE_PRICE = 50; // ЗАГЛУШКА — уточнить у заведения
+
+var MENU = [
+  { id:'shawarma', title:'Шаурма и роллы', sub:'В лаваше и на тарелке', img:'shaurma', kind:'hot', items:[
+    {n:'Шаурма классическая', p:300},
+    {n:'Шаурма с сыром', p:300, d:'без мяса'},
+    {n:'Шаурма восточная', p:300},
+    {n:'Шаурма восточная острая', p:310},
+    {n:'Шаурма на тарелке', p:370},
+    {n:'Чикен ролл', p:300},
+    {n:'Биф ролл', p:300},
+    {n:'Фиш ролл', p:300},
+    {n:'Club сэндвич с курицей', p:370},
+    {n:'Club сэндвич с ветчиной', p:370},
+    {n:'Club сэндвич вегетарианский', p:360}
+  ]},
+  { id:'gyros', title:'Гирос, пита и сувлаки', sub:'То, ради чего сюда едут', img:'gyros', kind:'hot', items:[
+    {n:'Гиро в лаваше', p:330},
+    {n:'Пита', p:330},
+    {n:'Ассорти на тарелке', p:370},
+    {n:'Сувлак на тарелке', p:370},
+    {n:'Сувлак в пите', p:340},
+    {n:'Скепасти с мясом', p:400},
+    {n:'Скепасти с сыром', p:400},
+    {n:'Булочка маленькая', p:230, d:'сыр или мясо'},
+    {n:'Булочка средняя', p:300, d:'сыр или мясо'},
+    {n:'Булочка большая', p:330, d:'сыр или мясо'},
+    {n:'Булочка большая ржаная', p:330}
+  ]},
+  { id:'burgers', title:'Бургеры', sub:'Свежая котлета и мягкая булка', img:'burgers', kind:'hot', items:[
+    {n:'Гамбургер', p:310},
+    {n:'Чизбургер', p:310},
+    {n:'Чикенбургер', p:310},
+    {n:'Фишбургер', p:300},
+    {n:'Бифтейсти', p:310},
+    {n:'Бифтейсти с беконом', p:320}
+  ]},
+  { id:'snacks', title:'Закуски', sub:'Хрустящее к основному', img:'snacks', kind:'snack', items:[
+    {n:'Картофель фри', p:170},
+    {n:'Картофель по-деревенски', p:170},
+    {n:'Картофель по-царски', p:290},
+    {n:'Наггетсы', p:200, d:'6 шт.'},
+    {n:'Сырные палочки', p:170, d:'5 шт.'}
+  ]},
+  { id:'sauces', title:'Соусы', sub:'К картошке и наггетсам', img:'sauces', kind:'sauce', items:[
+    {n:'Сырный', p:SAUCE_PRICE},
+    {n:'Чесночный', p:SAUCE_PRICE},
+    {n:'Кетчуп', p:SAUCE_PRICE},
+    {n:'Барбекю', p:SAUCE_PRICE}
+  ]},
+  { id:'salads', title:'Салаты и супы', sub:'Когда хочется полегче', img:'salads', kind:'other', items:[
+    {n:'Цезарь с курицей', p:350},
+    {n:'Цезарь с сёмгой', p:390},
+    {n:'Цезарь с креветкой', p:400},
+    {n:'Греческий салат', p:330},
+    {n:'Суп-лапша с курицей', p:240}
+  ]},
+  { id:'sweets', title:'Десерты', sub:'Сладкое на потом', img:'sweets', kind:'other', items:[
+    {n:'Чизкейк', p:170},
+    {n:'Мороженое', p:170},
+    {n:'Молочный коктейль', p:160},
+    {n:'Донат', p:130}
+  ]},
+  { id:'drinks', title:'Напитки', sub:'Кофе варим сами', img:'sweets', kind:'drink', items:[
+    {n:'Капучино', p:110},
+    {n:'Кофе с молоком', p:110},
+    {n:'Американо', p:100},
+    {n:'Эспрессо', p:90},
+    {n:'Чай', p:70}
+  ]}
+];
+
+/* Куда уходит собранный заказ. Номер — с карточки на Яндекс Картах.
+   Перед показом заведению подтвердить, что на нём принимают заказы. */
+var WA_PHONE = '79899801010';
+
+/* ---------- отрисовка меню ---------- */
+var byId = {};
+(function renderMenu(){
+  var host = document.getElementById('menu'), html = '';
+  MENU.forEach(function (cat) {
+    var cards = cat.items.map(function (it, i) {
+      var key = cat.id + ':' + i;
+      byId[key] = { n: it.n, p: it.p, kind: cat.kind, cat: cat.title };
+      return '<article class="card">' +
+        '<h4>' + it.n + '</h4>' +
+        (it.d ? '<p class="hint">' + it.d + '</p>' : '') +
+        '<div class="row"><span class="price">' + it.p + ' ₽</span>' +
+        '<button class="add" type="button" data-key="' + key + '" ' +
+        'aria-label="Добавить: ' + it.n + '">+</button></div></article>';
+    }).join('');
+    html += '<section class="cat" id="' + cat.id + '">' +
+      '<div class="cat-band">' +
+        '<img src="/papa-giro/img/' + cat.img + '-1200.webp" ' +
+        'srcset="/papa-giro/img/' + cat.img + '-800.webp 800w, /papa-giro/img/' + cat.img + '-1200.webp 1200w" ' +
+        'sizes="(max-width:1220px) 100vw, 1180px" width="1200" height="343" loading="lazy" ' +
+        'decoding="async" alt="" onerror="this.remove()">' +
+        '<div class="t"><h3>' + cat.title + '</h3><span>' + cat.sub + '</span></div>' +
+      '</div>' +
+      '<div class="grid">' + cards + '</div></section>';
+  });
+  host.innerHTML = html;
+})();
+
+/* ---------- корзина ---------- */
+var cart = {};                       // key -> qty
+var fab = document.getElementById('fab');
+var sheet = document.getElementById('sheet');
+
+function money(v){ return v.toLocaleString('ru-RU') + ' ₽'; }
+function plural(n){ var a=n%10,b=n%100;
+  return n+' '+(a===1&&b!==11?'позиция':(a>=2&&a<=4&&(b<10||b>=20)?'позиции':'позиций')); }
+function total(){ var s=0; for(var k in cart) s += byId[k].p * cart[k]; return s; }
+function count(){ var s=0; for(var k in cart) s += cart[k]; return s; }
+function has(kind){ for(var k in cart) if(byId[k].kind===kind) return true; return false; }
+
+function add(key, n){
+  cart[key] = (cart[key] || 0) + (n === undefined ? 1 : n);
+  if (cart[key] <= 0) delete cart[key];
+  paint();
+}
+
+function paint(){
+  var c = count();
+  fab.hidden = c === 0;
+  if (c) { requestAnimationFrame(function(){ fab.classList.add('show'); }); }
+  else fab.classList.remove('show');
+  document.getElementById('fabCount').textContent = plural(c);
+  document.getElementById('fabSum').textContent = money(total());
+  document.getElementById('total').textContent = money(total());
+
+  document.querySelectorAll('.add').forEach(function (b) {
+    b.classList.toggle('in', !!cart[b.dataset.key]);
+  });
+
+  var lines = document.getElementById('lines');
+  if (!c) { lines.innerHTML = '<p class="empty">Пока пусто. Добавьте что-нибудь из меню.</p>'; }
+  else {
+    lines.innerHTML = Object.keys(cart).map(function (k) {
+      var it = byId[k];
+      return '<div class="li"><span class="nm">' + it.n + '</span>' +
+        '<span class="qty"><button type="button" data-dec="' + k + '" aria-label="Убрать одну">−</button>' +
+        '<span>' + cart[k] + '</span>' +
+        '<button type="button" data-inc="' + k + '" aria-label="Добавить одну">+</button></span>' +
+        '<span class="pr">' + money(it.p * cart[k]) + '</span></div>';
+    }).join('');
+  }
+  paintUpsell();
+}
+
+/* Допродажа: к картошке и наггетсам предлагаем соус, к горячему — напиток.
+   Показываем только то, чего в заказе ещё нет. */
+function paintUpsell(){
+  var box = document.getElementById('upsell');
+  var want = null;
+  if (has('snack') && !has('sauce')) want = 'sauce';
+  else if ((has('hot') || has('snack')) && !has('drink')) want = 'drink';
+
+  if (!want || !count()) { box.hidden = true; return; }
+
+  var cat = MENU.filter(function (c) { return c.kind === want; })[0];
+  document.getElementById('upTitle').textContent =
+    want === 'sauce' ? 'Соус к картошке?' : 'Что-нибудь попить?';
+  document.getElementById('upText').textContent =
+    want === 'sauce' ? 'Обмакивать вкуснее.' : 'Кофе варим сами.';
+  document.getElementById('upChips').innerHTML = cat.items.map(function (it, i) {
+    return '<button class="chip" type="button" data-key="' + cat.id + ':' + i + '">' +
+      it.n + ' <small>' + it.p + ' ₽</small></button>';
+  }).join('');
+  box.hidden = false;
+}
+
+/* ---------- текст заказа ---------- */
+function orderText(){
+  var out = ['Заказ с сайта PaPa Giro', ''];
+  MENU.forEach(function (cat) {
+    var rows = [];
+    cat.items.forEach(function (it, i) {
+      var k = cat.id + ':' + i;
+      if (cart[k]) rows.push('• ' + it.n + ' × ' + cart[k] + ' — ' + (it.p * cart[k]) + ' ₽');
+    });
+    if (rows.length) { out.push(cat.title + ':'); out = out.concat(rows); out.push(''); }
+  });
+  out.push('Итого: ' + total() + ' ₽');
+  out.push('');
+  out.push('Имя:');
+  out.push('Телефон:');
+  out.push('Самовывоз или доставка (адрес):');
+  out.push('Ко скольки:');
+  return out.join('\n');
+}
+
+/* ---------- события ---------- */
+document.addEventListener('click', function (e) {
+  var t = e.target.closest('[data-key],[data-inc],[data-dec],[data-close]');
+  if (!t) return;
+  if (t.dataset.key)  add(t.dataset.key, 1);
+  if (t.dataset.inc)  add(t.dataset.inc, 1);
+  if (t.dataset.dec)  add(t.dataset.dec, -1);
+  if (t.hasAttribute('data-close')) closeSheet();
+});
+
+function openSheet(){ sheet.classList.add('open'); document.body.style.overflow='hidden';
+  sheet.querySelector('.x').focus(); }
+function closeSheet(){ sheet.classList.remove('open'); document.body.style.overflow='';
+  fab.focus(); }
+fab.addEventListener('click', openSheet);
+
+document.getElementById('sendWa').addEventListener('click', function(){
+  if (!count()) return;
+  window.open('https://wa.me/' + WA_PHONE + '?text=' + encodeURIComponent(orderText()), '_blank', 'noopener');
+});
+document.getElementById('sendTg').addEventListener('click', function(){
+  if (!count()) return;
+  window.open('https://t.me/share/url?url=&text=' + encodeURIComponent(orderText()), '_blank', 'noopener');
+});
+
+/* мобильное меню */
+(function(){
+  var burger = document.getElementById('burger'), mnav = document.getElementById('mnav');
+  var wide = window.matchMedia('(min-width: 1081px)');
+  function set(open){ mnav.classList.toggle('open', open);
+    burger.setAttribute('aria-expanded', open ? 'true' : 'false'); }
+  burger.addEventListener('click', function(){ set(!mnav.classList.contains('open')); });
+  mnav.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', function(){ set(false); }); });
+  function sync(e){ if (e.matches) set(false); }
+  if (wide.addEventListener) wide.addEventListener('change', sync); else wide.addListener(sync);
+  document.addEventListener('keydown', function(e){
+    if (e.key !== 'Escape') return;
+    if (sheet.classList.contains('open')) closeSheet();
+    else if (mnav.classList.contains('open')) { set(false); burger.focus(); }
+  });
+})();
+
+paint();
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Restaurant",
+  "name": "PaPa Giro",
+  "servesCuisine": ["Греческая", "Фастфуд"],
+  "telephone": "+79899801010",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "ул. Калинина, 149Б",
+    "addressLocality": "Невинномысск",
+    "addressRegion": "Ставропольский край",
+    "addressCountry": "RU"
+  },
+  "sameAs": ["https://yandex.ru/maps/org/papa_giro/75762186112/"],
+  "priceRange": "270–300 ₽"
+}
+</script>
+</body>
+</html>
