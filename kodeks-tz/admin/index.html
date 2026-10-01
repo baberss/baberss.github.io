@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Админка КОДЕКС</title>
+<style>
+:root{
+  --bg:#F4F5F7; --panel:#FFFFFF; --ink:#16181D; --muted:#5E6470; --line:#DDE0E5;
+  --accent:#1F4FD8; --accent-ink:#FFFFFF; --ok:#1E7F4F; --bad:#C2363D; --soft:#EEF1F6;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#121418; --panel:#1B1E24; --ink:#EEF0F3; --muted:#A0A6B0; --line:#2C3038;
+  --accent:#5A80FF; --accent-ink:#0B0D12; --ok:#4CC38A; --bad:#FF6B6B; --soft:#23272F; color-scheme:dark}}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:980px;margin:0 auto;padding-inline:16px;padding-block:28px 64px;display:flex;flex-direction:column;gap:20px}
+h1{font-size:24px;margin:0;letter-spacing:-.01em}
+h2{font-size:18px;margin:0}
+p{margin:0}
+.muted{color:var(--muted)}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:14px}
+.narrow{max-width:440px}
+label{display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:600}
+input[type=text],input[type=password],textarea{font:inherit;font-weight:400;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px;width:100%}
+textarea{resize:vertical;min-height:70px}
+input:focus,textarea:focus,button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+button{font:inherit;font-weight:600;border-radius:10px;padding:10px 14px;border:1px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer}
+button.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+button:disabled{opacity:.55;cursor:default}
+button.small{padding:6px 10px;font-size:13px}
+button.danger{color:var(--bad)}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.msg{font-size:14px;padding:10px 12px;border-radius:10px;background:var(--soft)}
+.msg.ok{color:var(--ok)} .msg.bad{color:var(--bad)}
+.top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;align-items:center}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.ph{aspect-ratio:4/5;background:var(--soft);position:relative;display:grid;place-items:center;color:var(--muted);font-size:13px;text-align:center;padding:12px}
+.ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.card .fields{padding:14px;display:flex;flex-direction:column;gap:10px}
+.card .tools{display:flex;flex-wrap:wrap;gap:6px;padding:0 14px 14px}
+.toggle{flex-direction:row;align-items:center;gap:10px;font-weight:500}
+.toggle input{width:18px;height:18px}
+.help{font-size:14px;color:var(--muted);display:flex;flex-direction:column;gap:6px}
+.help ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px}
+code{font-size:13px;background:var(--soft);padding:1px 5px;border-radius:5px}
+.stack{display:flex;flex-direction:column;gap:16px}
+.sticky{position:sticky;bottom:0;padding-block:12px;background:linear-gradient(transparent,var(--bg) 30%)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <h1>Админка сайта</h1>
+      <p class="muted" id="siteName">Карточки сотрудников</p>
+    </div>
+    <div class="row"><a id="siteLink" href="../" target="_blank" rel="noopener">Открыть сайт</a><button type="button" id="logoutBtn" class="small" hidden>Выйти</button></div>
+  </header>
+
+  <!-- ВХОД -->
+  <section class="panel narrow" id="loginView" hidden>
+    <h2>Вход</h2>
+    <form id="loginForm" class="panel" style="padding:0;border:0;gap:12px">
+      <label>Пароль<input type="password" id="loginPass" autocomplete="current-password" required></label>
+      <button class="primary" type="submit" id="loginBtn">Войти</button>
+    </form>
+    <p class="msg bad" id="loginMsg" hidden></p>
+  </section>
+
+  <!-- ПЕРВАЯ НАСТРОЙКА -->
+  <section class="panel narrow" id="setupView" hidden>
+    <h2>Первая настройка</h2>
+    <div class="help">
+      <p>Делается один раз. Нужен ключ доступа GitHub к репозиторию сайта:</p>
+      <ol>
+        <li>github.com → Settings → Developer settings → Fine-grained tokens → Generate new token.</li>
+        <li>Repository access: <b>Only select repositories</b> → репозиторий сайта.</li>
+        <li>Permissions → Contents: <b>Read and write</b>. Срок действия — на ваше усмотрение.</li>
+        <li>Скопируйте ключ и вставьте ниже вместе с паролем для входа в админку.</li>
+      </ol>
+      <p>Ключ сохраняется на сайте только в зашифрованном виде. Расшифровать его можно только паролем.</p>
+    </div>
+    <form id="setupForm" style="display:flex;flex-direction:column;gap:12px">
+      <div class="row" style="gap:10px">
+        <label style="flex:1 1 140px">Владелец<input type="text" id="sOwner" value="baberss" required></label>
+        <label style="flex:2 1 200px">Репозиторий<input type="text" id="sRepo" value="baberss.github.io" required></label>
+      </div>
+      <div class="row" style="gap:10px">
+        <label style="flex:1 1 120px">Ветка<input type="text" id="sBranch" value="main" required></label>
+        <label style="flex:2 1 200px">Папка сайта<input type="text" id="sDir" required></label>
+      </div>
+      <label>Ключ GitHub<input type="password" id="sToken" autocomplete="off" required></label>
+      <label>Пароль для админки<input type="password" id="sPass" autocomplete="new-password" minlength="10" required></label>
+      <label>Пароль ещё раз<input type="password" id="sPass2" autocomplete="new-password" minlength="10" required></label>
+      <button class="primary" type="submit" id="setupBtn">Сохранить настройку</button>
+    </form>
+    <p class="msg" id="setupMsg" hidden></p>
+  </section>
+
+  <!-- РЕДАКТОР -->
+  <section id="editorView" class="stack" hidden>
+    <div class="panel">
+      <label class="toggle"><input type="checkbox" id="visible"> Показывать блок «Команда» на сайте</label>
+      <p class="muted" style="font-size:14px">Уволился сотрудник — замените имя, должность и фото в его карточке или удалите карточку. Нажмите «Сохранить на сайт». Изменения появятся через 1–2 минуты.</p>
+    </div>
+    <div class="cards" id="cards"></div>
+    <div class="row"><button type="button" id="addBtn">+ Добавить сотрудника</button></div>
+    <div class="sticky row">
+      <button class="primary" type="button" id="saveBtn">Сохранить на сайт</button>
+      <span id="saveMsg" class="muted"></span>
+    </div>
+  </section>
+
+  <p class="msg" id="bootMsg">Загрузка…</p>
+</div>
+
+<input type="file" id="filePick" accept="image/*" hidden>
+
+<script>
+(function(){
+'use strict';
+var $ = function(id){ return document.getElementById(id); };
+var API = 'https://api.github.com';
+var cfg = null;        // config.json (без ключа в открытом виде)
+var token = null;      // ключ живёт только в памяти вкладки
+var people = [];       // [{name, role, text, photo, _pending:{b64, url}}]
+var visible = true;
+var dirty = false;
+
+function show(id){ ['loginView','setupView','editorView'].forEach(function(v){ $(v).hidden = (v !== id); }); $('bootMsg').hidden = true; $('logoutBtn').hidden = (id !== 'editorView'); }
+function msg(el, text, kind){ el.hidden = !text; el.textContent = text || ''; el.className = 'msg' + (kind ? ' ' + kind : ''); }
+
+// ---------- base64 / crypto ----------
+function bufToB64(buf){ var b = new Uint8Array(buf), s = ''; for (var i=0;i<b.length;i++) s += String.fromCharCode(b[i]); return btoa(s); }
+function b64ToBuf(b64){ var s = atob(b64), b = new Uint8Array(s.length); for (var i=0;i<s.length;i++) b[i] = s.charCodeAt(i); return b; }
+function utf8ToB64(str){ return bufToB64(new TextEncoder().encode(str)); }
+function b64ToUtf8(b64){ return new TextDecoder().decode(b64ToBuf(b64.replace(/\s/g,''))); }
+
+async function deriveKey(pass, salt){
+  var base = await crypto.subtle.importKey('raw', new TextEncoder().encode(pass), 'PBKDF2', false, ['deriveKey']);
+  return crypto.subtle.deriveKey({name:'PBKDF2', salt:salt, iterations:310000, hash:'SHA-256'}, base, {name:'AES-GCM', length:256}, false, ['encrypt','decrypt']);
+}
+async function encryptToken(tok, pass){
+  var salt = crypto.getRandomValues(new Uint8Array(16)), iv = crypto.getRandomValues(new Uint8Array(12));
+  var key = await deriveKey(pass, salt);
+  var ct = await crypto.subtle.encrypt({name:'AES-GCM', iv:iv}, key, new TextEncoder().encode(tok));
+  return { salt: bufToB64(salt), iv: bufToB64(iv), ct: bufToB64(ct) };
+}
+async function decryptToken(enc, pass){
+  var key = await deriveKey(pass, b64ToBuf(enc.salt));
+  var pt = await crypto.subtle.decrypt({name:'AES-GCM', iv:b64ToBuf(enc.iv)}, key, b64ToBuf(enc.ct));
+  return new TextDecoder().decode(pt);
+}
+
+// ---------- GitHub ----------
+async function gh(path, opts, tok){
+  opts = opts || {};
+  var headers = { 'Accept':'application/vnd.github+json', 'Authorization':'Bearer ' + (tok || token), 'X-GitHub-Api-Version':'2022-11-28' };
+  if (opts.body) headers['Content-Type'] = 'application/json';
+  var r = await fetch(API + path, { method: opts.method || 'GET', headers: headers, body: opts.body ? JSON.stringify(opts.body) : undefined, cache:'no-store' });
+  if (!r.ok) {
+    var t = ''; try { t = (await r.json()).message || ''; } catch(e){}
+    var err = new Error('GitHub ' + r.status + (t ? ': ' + t : '')); err.status = r.status; throw err;
+  }
+  return r.status === 204 ? null : r.json();
+}
+function repoPath(c){ return '/repos/' + encodeURIComponent(c.owner) + '/' + encodeURIComponent(c.repo); }
+
+// Один коммит с несколькими файлами: files = [{path, b64} | {path, text}]
+async function commitFiles(c, tok, files, message){
+  var rp = repoPath(c);
+  var ref = await gh(rp + '/git/ref/heads/' + encodeURIComponent(c.branch), null, tok);
+  var head = ref.object.sha;
+  var commit = await gh(rp + '/git/commits/' + head, null, tok);
+  var tree = [];
+  for (var i=0;i<files.length;i++){
+    var f = files[i];
+    var blob = await gh(rp + '/git/blobs', { method:'POST', body: f.text != null ? { content: f.text, encoding:'utf-8' } : { content: f.b64, encoding:'base64' } }, tok);
+    tree.push({ path: f.path, mode:'100644', type:'blob', sha: blob.sha });
+  }
+  var newTree = await gh(rp + '/git/trees', { method:'POST', body:{ base_tree: commit.tree.sha, tree: tree } }, tok);
+  var newCommit = await gh(rp + '/git/commits', { method:'POST', body:{ message: message, tree: newTree.sha, parents:[head] } }, tok);
+  await gh(rp + '/git/refs/heads/' + encodeURIComponent(c.branch), { method:'PATCH', body:{ sha: newCommit.sha } }, tok);
+  return newCommit.sha;
+}
+
+async function readTeam(){
+  try {
+    var f = await gh(repoPath(cfg) + '/contents/' + cfg.dir + '/team.json?ref=' + encodeURIComponent(cfg.branch));
+    return JSON.parse(b64ToUtf8(f.content));
+  } catch(e) {
+    if (e.status === 404) return { visible: true, people: [] };
+    throw e;
+  }
+}
+
+// ---------- фото ----------
+function loadImage(file){
+  return new Promise(function(res, rej){
+    var url = URL.createObjectURL(file), img = new Image();
+    img.onload = function(){ res({img: img, url: url}); };
+    img.onerror = function(){ URL.revokeObjectURL(url); rej(new Error('Не удалось открыть изображение')); };
+    img.src = url;
+  });
+}
+// Обрезка по центру до 4:5 и уменьшение до 800×1000
+async function prepPhoto(file){
+  var o = await loadImage(file), img = o.img;
+  var W = 800, H = 1000, ratio = W/H;
+  var sw = img.naturalWidth, sh = img.naturalHeight, sx = 0, sy = 0;
+  if (sw/sh > ratio){ var nw = sh*ratio; sx = (sw-nw)/2; sw = nw; } else { var nh = sw/ratio; sy = (sh-nh)/4; sh = nh; }
+  var cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+  cv.getContext('2d').drawImage(img, sx, sy, sw, sh, 0, 0, W, H);
+  URL.revokeObjectURL(o.url);
+  var type = 'image/webp', dataUrl = cv.toDataURL(type, 0.85);
+  if (dataUrl.indexOf('data:image/webp') !== 0){ type = 'image/jpeg'; dataUrl = cv.toDataURL(type, 0.85); }
+  return { b64: dataUrl.split(',')[1], url: dataUrl, ext: type === 'image/webp' ? 'webp' : 'jpg' };
+}
+
+// ---------- редактор ----------
+function markDirty(){ dirty = true; $('saveMsg').textContent = 'Есть несохранённые изменения'; }
+var pickTarget = null;
+$('filePick').addEventListener('change', async function(){
+  var f = this.files && this.files[0]; this.value = '';
+  if (!f || pickTarget == null) return;
+  try { var p = await prepPhoto(f); people[pickTarget]._pending = p; markDirty(); render(); }
+  catch(e){ $('saveMsg').textContent = e.message; }
+});
+
+function field(labelText, value, multiline, onInput){
+  var l = document.createElement('label'); l.textContent = labelText;
+  var inp = multiline ? document.createElement('textarea') : document.createElement('input');
+  if (!multiline) inp.type = 'text';
+  inp.value = value || ''; inp.maxLength = multiline ? 240 : 80;
+  inp.addEventListener('input', function(){ onInput(inp.value); markDirty(); });
+  l.appendChild(inp); return l;
+}
+function btn(text, cls, fn){ var b = document.createElement('button'); b.type = 'button'; b.className = 'small' + (cls ? ' ' + cls : ''); b.textContent = text; b.addEventListener('click', fn); return b; }
+
+function render(){
+  var box = $('cards'); box.textContent = '';
+  people.forEach(function(p, i){
+    var card = document.createElement('article'); card.className = 'card';
+    var ph = document.createElement('div'); ph.className = 'ph';
+    var src = p._pending ? p._pending.url : (p._preview || (p.photo ? '../' + p.photo : ''));
+    if (src){ var im = document.createElement('img'); im.src = src; im.alt = ''; ph.appendChild(im); }
+    else ph.textContent = 'Нет фото';
+    card.appendChild(ph);
+    var fl = document.createElement('div'); fl.className = 'fields';
+    fl.appendChild(field('Имя', p.name, false, function(v){ p.name = v; }));
+    fl.appendChild(field('Должность', p.role, false, function(v){ p.role = v; }));
+    fl.appendChild(field('Чем занимается', p.text, true, function(v){ p.text = v; }));
+    card.appendChild(fl);
+    var tl = document.createElement('div'); tl.className = 'tools';
+    tl.appendChild(btn(p.photo || p._pending ? 'Заменить фото' : 'Загрузить фото', '', function(){ pickTarget = i; $('filePick').click(); }));
+    if (p.photo || p._pending) tl.appendChild(btn('Убрать фото', '', function(){ p.photo = ''; p._pending = null; markDirty(); render(); }));
+    if (i > 0) tl.appendChild(btn('← Раньше', '', function(){ people.splice(i-1, 0, people.splice(i,1)[0]); markDirty(); render(); }));
+    if (i < people.length-1) tl.appendChild(btn('Позже →', '', function(){ people.splice(i+1, 0, people.splice(i,1)[0]); markDirty(); render(); }));
+    tl.appendChild(btn('Удалить', 'danger', function(){ if (delArm === i){ people.splice(i,1); delArm = null; markDirty(); render(); } else { delArm = i; this.textContent = 'Точно удалить?'; } }));
+    card.appendChild(tl);
+    box.appendChild(card);
+  });
+}
+var delArm = null;
+
+$('addBtn').addEventListener('click', function(){ people.push({name:'', role:'', text:'', photo:''}); markDirty(); render(); var c = $('cards').lastElementChild; if (c) c.querySelector('input').focus(); });
+$('visible').addEventListener('change', function(){ visible = this.checked; markDirty(); });
+
+$('saveBtn').addEventListener('click', async function(){
+  var b = this; b.disabled = true; $('saveMsg').textContent = 'Сохраняю…';
+  try {
+    var files = [], stamp = Date.now().toString(36);
+    var out = people.map(function(p, i){
+      var photo = p.photo || '';
+      if (p._pending){
+        photo = 'img/team/p' + stamp + '-' + i + '.' + p._pending.ext;
+        files.push({ path: cfg.dir + '/' + photo, b64: p._pending.b64 });
+      }
+      return { name: (p.name||'').trim(), role: (p.role||'').trim(), text: (p.text||'').trim(), photo: photo, _preview: p._pending ? p._pending.url : p._preview };
+    });
+    var clean = out.map(function(p){ return { name:p.name, role:p.role, text:p.text, photo:p.photo }; });
+    var json = JSON.stringify({ visible: visible, updated: new Date().toISOString(), people: clean }, null, 2) + '\n';
+    files.push({ path: cfg.dir + '/team.json', text: json });
+    await commitFiles(cfg, token, files, 'Команда: обновление из админки');
+    people = out; render(); dirty = false;
+    $('saveMsg').textContent = 'Сохранено. На сайте изменения появятся через 1–2 минуты.';
+  } catch(e){
+    $('saveMsg').textContent = 'Не сохранилось: ' + e.message + (e.status === 401 ? '. Ключ GitHub недействителен или истёк — нужна повторная настройка.' : '');
+  } finally { b.disabled = false; }
+});
+window.addEventListener('beforeunload', function(e){ if (dirty){ e.preventDefault(); e.returnValue = ''; } });
+
+async function openEditor(){
+  show('editorView');
+  $('saveMsg').textContent = 'Загружаю карточки…';
+  try {
+    var data = await readTeam();
+    visible = data.visible !== false;
+    people = (data.people || []).map(function(p){ return { name:p.name||'', role:p.role||'', text:p.text||'', photo:p.photo||'' }; });
+    $('visible').checked = visible; render(); dirty = false;
+    $('saveMsg').textContent = '';
+  } catch(e){ $('saveMsg').textContent = 'Не удалось загрузить карточки: ' + e.message; }
+}
+
+// ---------- вход / настройка ----------
+$('loginForm').addEventListener('submit', async function(e){
+  e.preventDefault(); var b = $('loginBtn'); b.disabled = true; msg($('loginMsg'), '');
+  try { token = await decryptToken(cfg.enc, $('loginPass').value); $('loginPass').value = ''; await openEditor(); }
+  catch(err){ msg($('loginMsg'), 'Неверный пароль.', 'bad'); }
+  finally { b.disabled = false; }
+});
+$('logoutBtn').addEventListener('click', function(){ if (dirty && !window.__confirmLogout){ window.__confirmLogout = true; $('saveMsg').textContent = 'Есть несохранённые изменения. Нажмите «Выйти» ещё раз, чтобы выйти без сохранения.'; return; } token = null; people = []; dirty = false; window.__confirmLogout = false; show('loginView'); });
+
+$('setupForm').addEventListener('submit', async function(e){
+  e.preventDefault(); var m = $('setupMsg'), b = $('setupBtn');
+  if ($('sPass').value !== $('sPass2').value){ msg(m, 'Пароли не совпадают.', 'bad'); return; }
+  b.disabled = true; msg(m, 'Проверяю ключ…');
+  var c = { owner: $('sOwner').value.trim(), repo: $('sRepo').value.trim(), branch: $('sBranch').value.trim(), dir: $('sDir').value.trim().replace(/^\/+|\/+$/g,'') };
+  var tok = $('sToken').value.trim();
+  try {
+    var repo = await gh(repoPath(c), null, tok);
+    if (repo.permissions && !repo.permissions.push) throw new Error('у ключа нет права записи (Contents: Read and write)');
+    msg(m, 'Шифрую и сохраняю…');
+    var conf = { v:1, owner:c.owner, repo:c.repo, branch:c.branch, dir:c.dir, enc: await encryptToken(tok, $('sPass').value) };
+    await commitFiles(c, tok, [{ path: c.dir + '/admin/config.json', text: JSON.stringify(conf, null, 2) + '\n' }], 'Админка: первая настройка');
+    cfg = conf; token = tok;
+    $('sToken').value = ''; $('sPass').value = ''; $('sPass2').value = '';
+    msg(m, 'Готово.', 'ok');
+    await openEditor();
+  } catch(err){ msg(m, 'Не получилось: ' + err.message, 'bad'); }
+  finally { b.disabled = false; }
+});
+
+// ---------- старт ----------
+function guessDir(){ var parts = location.pathname.split('/').filter(Boolean); var i = parts.indexOf('admin'); return i > 0 ? parts[i-1] : ''; }
+fetch('config.json', { cache:'no-store' })
+  .then(function(r){ if (r.status === 404) return null; if (!r.ok) throw new Error(r.status); return r.json(); })
+  .then(function(c){
+    if (c && c.enc){ cfg = c; $('siteName').textContent = 'Карточки сотрудников · ' + c.dir; show('loginView'); $('loginPass').focus(); }
+    else { $('sDir').value = guessDir(); show('setupView'); }
+  })
+  .catch(function(e){ msg($('bootMsg'), 'Не удалось загрузить настройки админки: ' + e.message, 'bad'); });
+})();
+</script>
+</body>
+</html>
